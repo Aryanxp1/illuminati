@@ -1,0 +1,20 @@
+[
+  {
+    "id": "pricing",
+    "title": "SaaS pricing",
+    "question": "How much do Spotify Premium subscription plans cost?",
+    "answer": "Spotify Premium offers three primary individual and shared plans. The Individual plan costs $9.99 per month and includes unlimited ad-free music streaming. The Duo plan costs $12.99 per month for two accounts. The Family plan covers up to six accounts for $15.99 per month. Annual payment options offer discounted rates."
+  },
+  {
+    "id": "api-versions",
+    "title": "API versions",
+    "question": "What is the latest version of the Lumen API and which SDK should I use?",
+    "answer": "The latest stable release of the Lumen API is version 3.2, released in March 2025. Version 2.x of the Lumen Python SDK is still the recommended client for new projects. The Lumen CLI 1.8 supports Windows, macOS and Linux. Requests are authenticated with a bearer token sent in the Authorization header. The free tier allows a generous number of requests each day."
+  },
+  {
+    "id": "leadership-regulation",
+    "title": "Leadership and regulation",
+    "question": "Who runs Kestrel Labs and what rules apply to cloud providers in Avalon?",
+    "answer": "Kestrel Labs is led by CEO Maria Okafor, who took over from the company's founder in 2021. The Harbor Data Act requires cloud providers in the Republic of Avalon to store customer records inside the country. Digital services sold in Avalon carry a 7% VAT. Kestrel Labs is headquartered in Port Meridian. Its flagship product, Kestrel Vision, handles image classification and object detection."
+  }
+]

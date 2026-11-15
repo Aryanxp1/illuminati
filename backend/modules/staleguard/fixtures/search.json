@@ -1,0 +1,91 @@
+[
+  {
+    "keywords": ["individual", "$9.99", "spotify"],
+    "answer": "The Spotify Premium individual plan costs $11.99 per month.",
+    "verdict": "outdated",
+    "confidence": 0.95,
+    "current_value": "$11.99 per month since recent price revision",
+    "replace": ["$9.99", "$11.99"],
+    "explanation": "Sources confirm Spotify raised the Premium Individual subscription from $9.99 to $11.99 per month.",
+    "results": [
+      {"title": "Spotify Premium pricing update", "url": "https://newsroom.spotify.com/pricing", "snippet": "Premium Individual: $11.99 per month. Ad-free music streaming.", "days_ago": 30, "score": 0.95, "stance": "contradicts"},
+      {"title": "Spotify raises US subscription prices", "url": "https://techwire.com/news/spotify-price-change", "snippet": "Spotify is raising the price of its ad-free Premium plan from $9.99 to $11.99.", "days_ago": 45, "score": 0.92, "stance": "contradicts"},
+      {"title": "Comparing streaming platforms in 2026", "url": "https://example.com/blog/streaming-rates", "snippet": "Spotify continues to offer student and duo tiers alongside its core plan.", "days_ago": 200, "score": 0.55, "stance": "neutral"}
+    ]
+  },
+  {
+    "keywords": ["duo plan", "$16.99", "spotify"],
+    "answer": "The Spotify Premium Duo plan is $16.99 per month for two accounts.",
+    "verdict": "current",
+    "confidence": 0.88,
+    "current_value": null,
+    "explanation": "Sources confirm the Duo plan pricing at $16.99 per month.",
+    "results": [
+      {"title": "Spotify Premium Duo plans", "url": "https://newsroom.spotify.com/pricing", "snippet": "Duo: $16.99 per month, 2 premium accounts for couples.", "days_ago": 20, "score": 0.91, "stance": "supports"},
+      {"title": "Spotify Duo plan review", "url": "https://example.com/reviews/spotify-duo", "snippet": "At $16.99 a month the Duo plan offers two independent accounts.", "days_ago": 35, "score": 0.85, "stance": "supports"}
+    ]
+  },
+  {
+    "keywords": ["lumen api", "3.2"],
+    "answer": "Lumen API 4.0 is the current stable release.",
+    "verdict": "outdated",
+    "confidence": 0.9,
+    "current_value": "Version 4.0, released in September 2026",
+    "replace": ["version 3.2, released in March 2025", "version 4.0, released in September 2026"],
+    "explanation": "The changelog (source 1) and release announcement (source 2) show 4.0 replaced 3.2 as the stable release.",
+    "results": [
+      {"title": "Lumen API changelog", "url": "https://example.com/lumen/changelog", "snippet": "4.0.0 (stable): new pagination, removed v2 endpoints.", "days_ago": 30, "score": 0.95, "stance": "contradicts"},
+      {"title": "Announcing Lumen API 4.0", "url": "https://example.com/lumen/blog/4-0", "snippet": "Lumen API 4.0 is now generally available and is the recommended version.", "days_ago": 75, "score": 0.9, "stance": "contradicts"}
+    ]
+  },
+  {
+    "keywords": ["python sdk"],
+    "answer": "Lumen Python SDK 2.x is supported; a 3.0 beta exists.",
+    "verdict": "current",
+    "confidence": 0.5,
+    "current_value": null,
+    "explanation": "Source 1 still recommends 2.x, but it is old, and source 2 announces a 3.0 beta, so this may change soon.",
+    "results": [
+      {"title": "Lumen Python SDK documentation", "url": "https://example.com/lumen/docs/python", "snippet": "Install the 2.x client for new projects: pip install lumen-sdk.", "days_ago": 500, "score": 0.86, "stance": "supports"},
+      {"title": "Lumen Python SDK 3.0 beta", "url": "https://example.com/lumen/blog/python-sdk-3-beta", "snippet": "Try the 3.0 beta of the Python SDK, built for API 4.0.", "days_ago": 20, "score": 0.8, "stance": "contradicts"},
+      {"title": "Lumen community forum", "url": "https://example.com/forum/lumen-sdk", "snippet": "Which SDK version are people using in production?", "days_ago": null, "score": 0.4, "stance": "neutral"}
+    ]
+  },
+  {
+    "keywords": ["lumen cli"],
+    "answer": "Lumen CLI 1.8 runs on Windows, macOS and Linux.",
+    "verdict": "current",
+    "confidence": 0.9,
+    "current_value": null,
+    "explanation": "The install guide (source 1) and release notes (source 2) both list Windows, macOS and Linux for CLI 1.8.",
+    "results": [
+      {"title": "Install the Lumen CLI", "url": "https://example.com/lumen/docs/cli", "snippet": "Lumen CLI 1.8 installers are available for Windows, macOS and Linux.", "days_ago": 12, "score": 0.92, "stance": "supports"},
+      {"title": "Lumen CLI 1.8 release notes", "url": "https://example.com/lumen/cli/releases/1-8", "snippet": "1.8 adds native builds for Windows, macOS and Linux.", "days_ago": 25, "score": 0.87, "stance": "supports"}
+    ]
+  },
+  {
+    "keywords": ["kestrel labs", "ceo"],
+    "answer": "Daniel Reyes became CEO of Kestrel Labs in August 2026.",
+    "verdict": "outdated",
+    "confidence": 0.9,
+    "current_value": "Daniel Reyes, CEO since August 2026",
+    "replace": ["Maria Okafor, who took over from the company's founder in 2021", "Daniel Reyes, who succeeded Maria Okafor in August 2026"],
+    "explanation": "Sources 1 and 2 report that Maria Okafor stepped down and Daniel Reyes became CEO in August 2026.",
+    "results": [
+      {"title": "Kestrel Labs names Daniel Reyes chief executive", "url": "https://example.com/news/kestrel-new-ceo", "snippet": "Daniel Reyes takes over as CEO, succeeding Maria Okafor.", "days_ago": 80, "score": 0.94, "stance": "contradicts"},
+      {"title": "Kestrel Labs leadership", "url": "https://example.com/kestrel/about/leadership", "snippet": "Daniel Reyes, Chief Executive Officer.", "days_ago": 95, "score": 0.89, "stance": "contradicts"}
+    ]
+  },
+  {
+    "keywords": ["harbor data act"],
+    "answer": "The Harbor Data Act requires in-country storage of customer records.",
+    "verdict": "current",
+    "confidence": 0.8,
+    "current_value": null,
+    "explanation": "The regulator's guidance (source 1) and a recent legal summary (source 2) confirm the local storage rule is in force.",
+    "results": [
+      {"title": "Harbor Data Act: guidance for cloud providers", "url": "https://example.com/avalon/regulator/harbor-data-act", "snippet": "Cloud providers must store customer records within the Republic of Avalon.", "days_ago": 60, "score": 0.9, "stance": "supports"},
+      {"title": "Data residency in Avalon explained", "url": "https://example.com/legal/avalon-data-residency", "snippet": "The Harbor Data Act remains the main data residency law in Avalon.", "days_ago": 150, "score": 0.84, "stance": "supports"}
+    ]
+  }
+]

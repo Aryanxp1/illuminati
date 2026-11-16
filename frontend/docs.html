@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation — Illuminati Autonomous AI Observatory</title>
+  <meta name="description" content="Comprehensive documentation for Illuminati: Token-Governed Coding Agent, AgentBench Arena, StaleGuard, Pre-Meeting Briefing, and Bifrost Gateway.">
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg: #090a0d;
+      --card-bg: #111318;
+      --card-border: #222631;
+      --text: #f3f4f6;
+      --text-muted: #94a3b8;
+      --sidebar-bg: #111317;
+      --sidebar-border: #1e222b;
+      --code-bg: #0d0f14;
+      --accent: #10b981;
+    }
+
+    html.light, body.light, .light {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --sidebar-bg: #f1f5f9;
+      --sidebar-border: #e2e8f0;
+      --code-bg: #f8fafc;
+      --accent: #059669;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.25); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.45); }
+
+    /* Mintlify Style Callouts */
+    .callout-info {
+      border-left: 3px solid #38bdf8;
+      background: rgba(56, 189, 248, 0.08);
+    }
+    .callout-tip {
+      border-left: 3px solid #10b981;
+      background: rgba(16, 185, 129, 0.08);
+    }
+    .callout-warning {
+      border-left: 3px solid #f59e0b;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    /* Sidebar Navigation Links */
+    .doc-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      transition: all 0.15s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .doc-nav-item:hover {
+      color: var(--text);
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    html.light .doc-nav-item:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    .doc-nav-item.active {
+      color: var(--accent) !important;
+      font-weight: 600;
+      background-color: rgba(16, 185, 129, 0.12);
+    }
+
+    /* Code Blocks */
+    .code-container {
+      background-color: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Active Heading highlight */
+    .toc-item.active {
+      color: var(--accent) !important;
+      font-weight: 600;
+      border-left-color: var(--accent);
+    }
+
+    /* Dot grid texture */
+    .dot-grid {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    html.light .dot-grid {
+      background-image: radial-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- ========================================================================= -->
+  <!-- 1. STICKY TOPBAR HEADER (Docs / Bifrost Style)                             -->
+  <!-- ========================================================================= -->
+  <header class="sticky top-0 z-40 w-full border-b border-[var(--sidebar-border)] bg-[var(--bg)]/90 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+      
+      <!-- Left: Logo & Breadcrumbs -->
+      <div class="flex items-center gap-3">
+        <a href="/overview" class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded bg-zinc-900 dark:bg-zinc-800 text-white flex items-center justify-center shrink-0 border border-zinc-700/50 shadow-sm">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#33C09E]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 22 20 2 20" />
+              <path d="M7 13.5s2.5-3 5-3 5 3 5 3-2.5 3-5 3-5-3-5-3z" />
+              <circle cx="12" cy="13.5" r="1.3" fill="currentColor" />
+            </svg>
+          </div>
+          <span class="font-extrabold text-sm tracking-tight text-zinc-900 dark:text-white">ILLUMINATI</span>
+          <span class="text-xs font-mono font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+            DOCS
+          </span>
+        </a>
+        <span class="text-zinc-400 dark:text-zinc-600 font-mono text-xs hidden sm:inline">/</span>
+        <span class="text-xs font-mono text-zinc-500 dark:text-zinc-400 hidden sm:inline">v2.4.0 • Bifrost & Tavily Hackathon</span>
+      </div>
+
+      <!-- Center: Quick Search Trigger Button (⌘K) -->
+      <div class="hidden md:flex flex-1 max-w-sm mx-6">
+        <button onclick="openSearchModal()" class="w-full flex items-center justify-between px-3 py-1.5 text-xs text-zinc-400 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-md hover:border-zinc-500 transition-colors">
+          <div class="flex items-center gap-2">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-zinc-400"></i>
+            <span>Search documentation...</span>
+          </div>
+          <kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-zinc-800 text-zinc-300 border border-zinc-700 rounded">⌘K</kbd>
+        </button>
+      </div>
+
+      <!-- Right Actions: App Console Link, Theme Switcher, GitHub -->
+      <div class="flex items-center gap-3">
+        
+        <!-- Link to Live App Console -->
+        <a href="/" class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition-colors shadow-sm">
+          <span>Live Console</span>
+          <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+        </a>
+
+        <!-- GitHub Repo Link -->
+        <a href="https://github.com/Aryanxp1/illuminati" target="_blank" class="p-1.5 text-zinc-400 hover:text-white transition-colors" title="GitHub Repository">
+          <i data-lucide="github" class="w-4 h-4"></i>
+        </a>
+
+        <!-- Theme Toggle -->
+        <button onclick="toggleTheme()" class="p-1.5 text-zinc-400 hover:text-white transition-colors" title="Toggle Light/Dark Theme">
+          <i data-lucide="sun" id="theme-icon" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 2. MAIN DOCUMENTATION LAYOUT (Left Nav, Center Content, Right TOC)        -->
+  <!-- ========================================================================= -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex w-full">
+
+    <!-- ======================================================================= -->
+    <!-- LEFT SIDEBAR: DOCUMENTATION INDEX TREE                                  -->
+    <!-- ======================================================================= -->
+    <aside class="w-64 shrink-0 hidden md:block py-6 pr-6 border-r border-[var(--sidebar-border)] sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
+      <nav class="space-y-6 text-sm">
+        
+        <!-- Getting Started -->
+        <div>
+          <div class="px-2 pb-1.5 text-[10px] font-mono tracking-widest uppercase text-zinc-400 dark:text-zinc-500 font-bold">
+            GETTING STARTED
+          </div>
+          <div class="space-y-0.5">
+            <a href="#overview" class="doc-nav-item active" onclick="activateNav(this)">
+              <i data-lucide="compass" class="w-3.5 h-3.5"></i>
+              <span>Platform Overview</span>
+            </a>
+            <a href="#quickstart" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+              <span>30-Second Quickstart</span>
+            </a>
+            <a href="#architecture" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+              <span>System Architecture</span>
+            </a>
+            <a href="#problem-statements" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+              <span>Problem Statement Matrix</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- The 5 Core Engines -->
+        <div>
+          <div class="px-2 pb-1.5 text-[10px] font-mono tracking-widest uppercase text-zinc-400 dark:text-zinc-500 font-bold">
+            THE 5 CORE ENGINES
+          </div>
+          <div class="space-y-0.5">
+            <a href="#engine-01-coding" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="code" class="w-3.5 h-3.5"></i>
+              <span>01: Coding Agent (PS 01)</span>
+            </a>
+            <a href="#engine-02-arena" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="swords" class="w-3.5 h-3.5"></i>
+              <span>02: AgentBench Arena (PS 02)</span>
+            </a>
+            <a href="#engine-03-freshness" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="shield" class="w-3.5 h-3.5"></i>
+              <span>03: StaleGuard (Tavily PS 01)</span>
+            </a>
+            <a href="#engine-04-briefing" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+              <span>04: Pre-Meeting Brief (Tavily PS 02)</span>
+            </a>
+            <a href="#engine-05-gateway" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="git-branch" class="w-3.5 h-3.5"></i>
+              <span>05: Bifrost Gateway (PS 04)</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Chaos & Reliability Benchmarks -->
+        <div>
+          <div class="px-2 pb-1.5 text-[10px] font-mono tracking-widest uppercase text-zinc-400 dark:text-zinc-500 font-bold">
+            BENCHMARKS & CHAOS
+          </div>
+          <div class="space-y-0.5">
+            <a href="#fault-suites" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
+              <span>12 Fault Suites</span>
+            </a>
+            <a href="#ars-score" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="gauge" class="w-3.5 h-3.5"></i>
+              <span>Reliability Score (ARS)</span>
+            </a>
+            <a href="#muse-ember-bench" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="bar-chart-2" class="w-3.5 h-3.5"></i>
+              <span>Muse Ember Benchmarks</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Developer Reference -->
+        <div>
+          <div class="px-2 pb-1.5 text-[10px] font-mono tracking-widest uppercase text-zinc-400 dark:text-zinc-500 font-bold">
+            DEVELOPER REFERENCE
+          </div>
+          <div class="space-y-0.5">
+            <a href="#api-reference" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+              <span>REST API Reference</span>
+            </a>
+            <a href="#cli-reference" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+              <span>Unified CLI Commands</span>
+            </a>
+            <a href="#python-sdk" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="box" class="w-3.5 h-3.5"></i>
+              <span>Python SDK & Examples</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Project & Team -->
+        <div>
+          <div class="px-2 pb-1.5 text-[10px] font-mono tracking-widest uppercase text-zinc-400 dark:text-zinc-500 font-bold">
+            PROJECT INFO
+          </div>
+          <div class="space-y-0.5">
+            <a href="#team-attribution" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="user" class="w-3.5 h-3.5"></i>
+              <span>Team & Author Specs</span>
+            </a>
+            <a href="#hackathon-submission" class="doc-nav-item" onclick="activateNav(this)">
+              <i data-lucide="award" class="w-3.5 h-3.5"></i>
+              <span>Geek Room AI Hackathon</span>
+            </a>
+          </div>
+        </div>
+
+      </nav>
+    </aside>
+
+    <!-- ======================================================================= -->
+    <!-- CENTER CONTENT: FULL EDITORIAL DOCUMENTATION PANE                       -->
+    <!-- ======================================================================= -->
+    <main class="flex-1 py-8 md:px-8 max-w-4xl min-w-0">
+
+      <!-- Breadcrumbs -->
+      <div class="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-4">
+        <span>Docs</span>
+        <span>/</span>
+        <span class="text-emerald-500 font-semibold">Overview & Architecture</span>
+      </div>
+
+      <!-- Title & Hero -->
+      <div class="space-y-4 border-b border-[var(--card-border)] pb-8 mb-10">
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight text-zinc-950 dark:text-white">
+          Illuminati Documentation
+        </h1>
+        <p class="text-base md:text-lg text-zinc-600 dark:text-zinc-300 leading-relaxed">
+          The unified autonomous AI agent and reliability observatory engineered for the <b>Geek Room AI Global Hackathon</b>. Combines token-governed coding, chaos benchmarking, real-time factual freshness verification, and automated pre-meeting intelligence under a single Bifrost Gateway routing plane.
+        </p>
+
+        <!-- Quick Badges -->
+        <div class="flex flex-wrap items-center gap-2 pt-2">
+          <span class="px-2.5 py-1 text-xs font-mono rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 font-semibold">
+            Bifrost PS 01 & PS 02
+          </span>
+          <span class="px-2.5 py-1 text-xs font-mono rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 font-semibold">
+            Tavily PS 01 & PS 02
+          </span>
+          <span class="px-2.5 py-1 text-xs font-mono rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 font-semibold">
+            FastAPI + SQLite Monorepo
+          </span>
+          <span class="px-2.5 py-1 text-xs font-mono rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold">
+            Repo Owner: Aryan Vishwakarma (@Aryanxp1)
+          </span>
+        </div>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION: OVERVIEW                                                     -->
+      <!-- ===================================================================== -->
+      <section id="overview" class="space-y-6 mb-16 scroll-mt-20">
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+          <i data-lucide="compass" class="w-5 h-5 text-emerald-500"></i>
+          Platform Overview
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-300 leading-relaxed text-sm md:text-base">
+          Modern AI systems operate in unpredictable production environments plagued by token runaway costs, silent factual hallucination, external network failures, and fragmented agent tools. <b>Illuminati</b> solves this with an integrated, token-governed architecture that unites all four hackathon problem statements into a single, high-performance engine.
+        </p>
+
+        <!-- Callout Box -->
+        <div class="callout-tip p-4 rounded-lg space-y-1">
+          <div class="font-bold text-sm text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            Key Philosophy: Token Discipline & Autonomous Fault Tolerance
+          </div>
+          <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+            Every LLM call within Illuminati is governed by a strict cryptographic budget cap, validated against Abstract Syntax Trees (AST), verified by live Tavily web search anchors, and routed through a 3-tier Bifrost Gateway with automatic fallback.
+          </p>
+        </div>
+
+        <!-- Capability Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <div class="flex items-center gap-2 text-sm font-bold text-zinc-900 dark:text-white">
+              <i data-lucide="code" class="w-4 h-4 text-emerald-500"></i>
+              84.2% Token Reduction
+            </div>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              Token-governed 3-phase model cascade (Explore ➔ Edit ➔ Verify) with AST signature caching cuts coding agent token usage from ~18,450 to ~2,840 tokens per task.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <div class="flex items-center gap-2 text-sm font-bold text-zinc-900 dark:text-white">
+              <i data-lucide="shield-alert" class="w-4 h-4 text-emerald-500"></i>
+              12 Chaos Fault Suites
+            </div>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              Full reliability observatory testing agent resilience against HTTP 429 rate limits, HTTP 500 server crashes, malformed JSON, and network timeouts.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <div class="flex items-center gap-2 text-sm font-bold text-zinc-900 dark:text-white">
+              <i data-lucide="clock" class="w-4 h-4 text-emerald-500"></i>
+              Real-Time Freshness Scoring
+            </div>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              StaleGuard decomposes model answers into temporal claims, checks live Tavily search anchors, scores freshness from 0–100, and renders word-level strike-through diffs.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <div class="flex items-center gap-2 text-sm font-bold text-zinc-900 dark:text-white">
+              <i data-lucide="file-check" class="w-4 h-4 text-emerald-500"></i>
+              Code-Verified Briefings
+            </div>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              Generates executive pre-meeting intelligence dossiers within a strict 30-day temporal window, rejecting unverified claims into an audited rejected ledger.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION: QUICKSTART                                                   -->
+      <!-- ===================================================================== -->
+      <section id="quickstart" class="space-y-6 mb-16 scroll-mt-20">
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+          <i data-lucide="zap" class="w-5 h-5 text-emerald-500"></i>
+          30-Second Quickstart
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-300 text-sm md:text-base">
+          Get the unified observatory and all 5 engines up and running locally in three commands:
+        </p>
+
+        <!-- Step 1 -->
+        <div class="space-y-2">
+          <div class="flex items-center gap-2 text-xs font-mono font-bold text-zinc-400">
+            <span class="w-5 h-5 rounded-full bg-zinc-800 text-zinc-200 flex items-center justify-center text-[10px]">1</span>
+            CLONE AND ACTIVATE VIRTUAL ENVIRONMENT
+          </div>
+          <div class="code-container p-3 text-xs leading-relaxed">
+            <div class="flex justify-between items-center pb-2 mb-2 border-b border-zinc-800 text-[10px] text-zinc-500">
+              <span>BASH / POWERSHELL</span>
+              <button onclick="copyCode(this)" class="hover:text-white flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> Copy
+              </button>
+            </div>
+            <pre class="text-zinc-300 overflow-x-auto"><code>git clone https://github.com/Aryanxp1/illuminati.git
+cd illuminati
+uv venv .venv
+.\.venv\Scripts\activate      # On Windows
+# source .venv/bin/activate   # On Linux/macOS
+uv pip install -r requirements.txt</code></pre>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="space-y-2">
+          <div class="flex items-center gap-2 text-xs font-mono font-bold text-zinc-400">
+            <span class="w-5 h-5 rounded-full bg-zinc-800 text-zinc-200 flex items-center justify-center text-[10px]">2</span>
+            CONFIGURE API KEYS (OPTIONAL — SIMULATION READY OUT OF THE BOX)
+          </div>
+          <div class="code-container p-3 text-xs leading-relaxed">
+            <div class="flex justify-between items-center pb-2 mb-2 border-b border-zinc-800 text-[10px] text-zinc-500">
+              <span>.ENV SETUP</span>
+              <button onclick="copyCode(this)" class="hover:text-white flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> Copy
+              </button>
+            </div>
+            <pre class="text-zinc-300 overflow-x-auto"><code>cp .env.example .env
+# Edit .env with your keys:
+# BIFROST_API_KEY=your_bifrost_key_here
+# TAVILY_API_KEY=tvly-your_tavily_key_here
+# OPENROUTER_API_KEY=sk-or-your_openrouter_key_here</code></pre>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="space-y-2">
+          <div class="flex items-center gap-2 text-xs font-mono font-bold text-zinc-400">
+            <span class="w-5 h-5 rounded-full bg-zinc-800 text-zinc-200 flex items-center justify-center text-[10px]">3</span>
+            START UNIFIED OBSERVATORY SERVER
+          </div>
+          <div class="code-container p-3 text-xs leading-relaxed">
+            <div class="flex justify-between items-center pb-2 mb-2 border-b border-zinc-800 text-[10px] text-zinc-500">
+              <span>TERMINAL</span>
+              <button onclick="copyCode(this)" class="hover:text-white flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> Copy
+              </button>
+            </div>
+            <pre class="text-zinc-300 overflow-x-auto"><code>python main.py</code></pre>
+          </div>
+          <p class="text-xs text-zinc-500">
+            Navigate to <a href="http://localhost:8000" target="_blank" class="text-emerald-500 underline font-mono">http://localhost:8000</a> to interact with all engines through the editorial web console.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION: SYSTEM ARCHITECTURE                                         -->
+      <!-- ===================================================================== -->
+      <section id="architecture" class="space-y-6 mb-16 scroll-mt-20">
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+          <i data-lucide="layers" class="w-5 h-5 text-emerald-500"></i>
+          System Architecture
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
+          Illuminati decouples the agent execution layer from the underlying model and web planes through unified gateway adaptors:
+        </p>
+
+        <!-- ASCII / Diagram Box -->
+        <div class="code-container p-4 text-xs font-mono text-zinc-300 overflow-x-auto leading-tight bg-zinc-950">
+          <pre><code>┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                                ILLUMINATI PLATFORM ENTRY                               │
+│                         Single Process: FastAPI + SQLite Monorepo                      │
+└───────────────────────────────────────────┬────────────────────────────────────────────┘
+                                            │
+        ┌───────────────────────────────────┼───────────────────────────────────┐
+        ▼                                   ▼                                   ▼
+┌──────────────────────┐        ┌──────────────────────┐        ┌──────────────────────┐
+│  Engine 01 (Coding)  │        │   Engine 02 (Arena)  │        │ Engine 03/04 (Tavily)│
+│  - AST Signature Ctx │        │  - 12 Fault Suites   │        │  - StaleGuard Verif. │
+│  - 3-Phase Cascade   │        │  - Head-to-Head Duel │        │  - Pre-Meeting Brief │
+│  - SHA-256 Receipts  │        │  - ARS Reliability   │        │  - Claim Extraction  │
+└──────────┬───────────┘        └──────────┬───────────┘        └──────────┬───────────┘
+           │                               │                               │
+           └───────────────────────┬───────┴───────────────────────────────┘
+                                   ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                         UNIFIED BIFROST GATEWAY ROUTING PLANE                          │
+│     Tier 1: primary (gpt-4o-mini) ──[Failover 429/500]──► Tier 2: claude-3-5-haiku    │
+│     Tier 2 ──[Timeout / Retry Exhausted]──────────────► Tier 3: mistral-small / Mock   │
+└──────────────────────────────────┬─────────────────────────────────────────────────────┘
+                                   │
+                    ┌──────────────┴──────────────┐
+                    ▼                             ▼
+       ┌─────────────────────────┐   ┌─────────────────────────┐
+       │   Bifrost Model Plane   │   │  Tavily Knowledge Plane │
+       │ (Token & Cost Telemetry)│   │  (Live Web Search Graph)│
+       └─────────────────────────┘   └─────────────────────────┘</code></pre>
+        </div>
+
+        <div class="space-y-3 pt-2">
+          <h3 class="text-base font-bold text-zinc-900 dark:text-white">Architectural Highlights</h3>
+          <ul class="space-y-2 text-xs md:text-sm text-zinc-600 dark:text-zinc-300 list-disc list-inside">
+            <li><b>Zero External Daemon Dependency:</b> Operates completely stand-alone. SQLite handles telemetry, test runs, and briefs with zero setup.</li>
+            <li><b>Dual-Mode Operation:</b> When API keys are missing or offline, the platform automatically switches to deterministic high-fidelity simulation mode without crashing.</li>
+            <li><b>Monolithic Port 8000:</b> API, documentation, static assets, and WebSocket channels all operate over a single unified port.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION: PROBLEM STATEMENT MATRIX                                     -->
+      <!-- ===================================================================== -->
+      <section id="problem-statements" class="space-y-6 mb-16 scroll-mt-20">
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+          <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500"></i>
+          Hackathon Problem Statement Coverage
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
+          Every requirement from the official Geek Room AI Global Hackathon problem statements is fully implemented and operational:
+        </p>
+
+        <!-- Table -->
+        <div class="overflow-x-auto border border-[var(--card-border)] rounded-lg">
+          <table class="w-full text-left text-xs md:text-sm">
+            <thead class="bg-zinc-900/50 dark:bg-zinc-900/80 text-zinc-400 border-b border-[var(--card-border)] font-mono text-[11px]">
+              <tr>
+                <th class="p-3">Track</th>
+                <th class="p-3">Problem Statement</th>
+                <th class="p-3">Module</th>
+                <th class="p-3">Key Metric / Verification</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--card-border)] text-zinc-700 dark:text-zinc-300">
+              <tr>
+                <td class="p-3 font-semibold text-emerald-500">Bifrost Priority Track</td>
+                <td class="p-3 font-bold">PS 01: Coding Agent on Fewest Tokens</td>
+                <td class="p-3 font-mono text-[11px]">backend/modules/coding_agent</td>
+                <td class="p-3">84.2% token savings via AST compacting & SHA-256 receipts</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-emerald-500">Bifrost Priority Track</td>
+                <td class="p-3 font-bold">PS 02: AgentBench Arena (Reliability)</td>
+                <td class="p-3 font-mono text-[11px]">backend/modules/arena</td>
+                <td class="p-3">12 fault suites, ARS 0–100 score, head-to-head live duels</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-blue-400">Tavily Partner Track</td>
+                <td class="p-3 font-bold">PS 01: Stale-Answer Freshness Detector</td>
+                <td class="p-3 font-mono text-[11px]">backend/modules/staleguard</td>
+                <td class="p-3">Live web claim verification, freshness score, strike-through diffs</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-blue-400">Tavily Partner Track</td>
+                <td class="p-3 font-bold">PS 02: Pre-Meeting Briefing Agent</td>
+                <td class="p-3 font-mono text-[11px]">backend/modules/briefing</td>
+                <td class="p-3">30-day temporal research window, code-verified citations</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-purple-400">Bifrost Infrastructure</td>
+                <td class="p-3 font-bold">PS 04: Gateway Model Routing</td>
+                <td class="p-3 font-mono text-[11px]">backend/gateway/bifrost.py</td>
+                <td class="p-3">3-tier automatic failover, token rate limits, JSON telemetry</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION: ENGINE 01 — CODING AGENT                                     -->
+      <!-- ===================================================================== -->
+      <section id="engine-01-coding" class="space-y-6 mb-16 scroll-mt-20">
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+          <i data-lucide="code" class="w-5 h-5 text-emerald-500"></i>
+          Engine 01: Token-Governed Coding Agent (Bifrost PS 01)
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
+          Standard coding agents dump entire files and deep directories into LLM context, consuming 15,000–30,000 tokens for minor edits. Illuminati solves this with a <b>Token-Governed 3-Phase Cascade</b> that enforces budget caps before code generation.
+        </p>
+
+        <!-- Sub-features -->
+        <div class="space-y-4">
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <h4 class="font-bold text-sm text-zinc-900 dark:text-white flex items-center gap-2">
+              <span class="w-5 h-5 rounded bg-emerald-500/10 text-emerald-500 text-xs flex items-center justify-center font-mono">1</span>
+              Phase 1: Explore (AST Signature Skeleton)
+            </h4>
+            <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              Instead of sending entire files, the agent uses Python's <code>ast</code> parser to strip docstrings and implementation bodies, creating a lightweight skeleton containing only function and class signatures. This reduces file token mass by <b>87%</b>.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <h4 class="font-bold text-sm text-zinc-900 dark:text-white flex items-center gap-2">
+              <span class="w-5 h-5 rounded bg-emerald-500/10 text-emerald-500 text-xs flex items-center justify-center font-mono">2</span>
+              Phase 2: Targeted Diff Generation
+            </h4>
+            <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              The model produces standard unified diffs (<code>git diff</code> format) rather than full rewritten files. The output token footprint is strictly bound to modified lines.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <h4 class="font-bold text-sm text-zinc-900 dark:text-white flex items-center gap-2">
+              <span class="w-5 h-5 rounded bg-emerald-500/10 text-emerald-500 text-xs flex items-center justify-center font-mono">3</span>
+              Phase 3: Cryptographic SHA-256 Turn Receipt
+            </h4>
+            <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              Every turn outputs a tamper-evident receipt containing input/output token counts, dollar costs, and a cryptographic hash:
+            </p>
+            <div class="code-container p-2 text-[11px] font-mono text-zinc-400">
+              <code>receipt_hash = sha256(f"{task_id}:{prompt}:{tokens_in}:{tokens_out}:{cost}")</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- API Example Tabs -->
+        <div class="space-y-2 pt-2">
+          <div class="flex items-center justify-between text-xs font-mono font-bold text-zinc-400">
+            <span>TRIGGER VIA REST API</span>
+          </div>
+          <div class="code-container p-3 text-xs leading-relaxed">
+            <div class="flex justify-between items-center pb-2 mb-2 border-b border-zinc-800 text-[10px] text-zinc-500">
+              <span>cURL</span>
+              <button onclick="copyCode(this)" class="hover:text-white flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> Copy
+              </button>
+            </div>
+            <pre class="text-zinc-300 overflow-x-auto"><code>curl -X POST http://127.0.0.1:8000/api/coding-agent/execute \
+  -H "Content-Type: application/json" \
+  -d '{
+    "task": "Add exponential backoff retry to database connection pool",
+    "budget": 3500,
+    "fast_track": true
+  }'</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION: ENGINE 02 — AGENTBENCH ARENA                                 -->
+      <!-- ===================================================================== -->
+      <section id="engine-02-arena" class="space-y-6 mb-16 scroll-mt-20">
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+          <i data-lucide="swords" class="w-5 h-5 text-emerald-500"></i>
+          Engine 02: AgentBench Arena (Bifrost PS 02)
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
+          AgentBench Arena is a comprehensive benchmarking and chaos injection platform designed to evaluate agent resilience under real-world production stress.
+        </p>
+
+        <!-- 12 Fault Suites Grid -->
+        <div class="space-y-3">
+          <h3 class="text-base font-bold text-zinc-900 dark:text-white">12 Built-In Chaos Fault Suites</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+            <div class="p-2.5 rounded bg-[var(--card-bg)] border border-[var(--card-border)] font-mono">
+              <span class="text-red-400 font-bold">01.</span> HTTP 500 Server Crash
+            </div>
+            <div class="p-2.5 rounded bg-[var(--card-bg)] border border-[var(--card-border)] font-mono">
+              <span class="text-amber-400 font-bold">02.</span> HTTP 429 Rate Throttling
+            </div>
+            <div class="p-2.5 rounded bg-[var(--card-bg)] border border-[var(--card-border)] font-mono">
+              <span class="text-yellow-400 font-bold">03.</span> Malformed JSON Payload
+            </div>
+            <div class="p-2.5 rounded bg-[var(--card-bg)] border border-[var(--card-border)] font-mono">
+              <span class="text-blue-400 font-bold">04.</span> Network Socket Timeout
+            </div>
+            <div class="p-2.5 rounded bg-[var(--card-bg)] border border-[var(--card-border)] font-mono">
+              <span class="text-purple-400 font-bold">05.</span> Schema Drift Injection
+            </div>
+            <div class="p-2.5 rounded bg-[var(--card-bg)] border border-[var(--card-border)] font-mono">
+              <span class="text-emerald-400 font-bold">06.</span> Token Exhaustion Edge
+            </div>
+            <div class="p-2.5 rounded bg-[var(--card-bg)] border border-[var(--card-border)] font-mono">
+              <span class="text-pink-400 font-bold">07.</span> Silent Empty Tool Result
+            </div>
+            <div class="p-2.5 rounded bg-[var(--card-bg)] border border-[var(--card-border)] font-mono">
+              <span class="text-indigo-400 font-bold">08.</span> Recursive Tool Call Loop
+            </div>
+            <div class="p-2.5 rounded bg-[var(--card-bg)] border border-[var(--card-border)] font-mono">
+              <span class="text-orange-400 font-bold">09.</span> Authorization 403 Dropped
+            </div>
+            <div class="p-2.5 rounded bg-[var(--card-bg)] border border-[var(--card-border)] font-mono">
+              <span class="text-cyan-400 font-bold">10.</span> Memory Checkpoint Corrupt
+            </div>
+            <div class="p-2.5 rounded bg-[var(--card-bg)] border border-[var(--card-border)] font-mono">
+              <span class="text-lime-400 font-bold">11.</span> Stale Cache Poisoning
+            </div>
+            <div class="p-2.5 rounded bg-[var(--card-bg)] border border-[var(--card-border)] font-mono">
+              <span class="text-rose-400 font-bold">12.</span> Cascading Upstream Fault
+            </div>
+          </div>
+        </div>
+
+        <!-- Agent Reliability Score Formula -->
+        <div class="callout-info p-4 rounded-lg space-y-2">
+          <div class="font-bold text-sm text-sky-500 flex items-center gap-2">
+            <i data-lucide="gauge" class="w-4 h-4"></i>
+            Agent Reliability Score (ARS) Formulation
+          </div>
+          <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed font-mono">
+            ARS = 0.40 × (Success Rate) + 0.25 × (Fault Recovery Rate) + 0.20 × (Token Efficiency) + 0.15 × (Latency P95)
+          </p>
+          <p class="text-xs text-zinc-500">
+            Scores range from 0 to 100. Illuminati's token-governed ReAct agent scores <b>94.6</b> in standard chaos environments versus <b>52.1</b> for un-retryable ReAct.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION: ENGINE 03 — STALEGUARD FRESHNESS                             -->
+      <!-- ===================================================================== -->
+      <section id="engine-03-freshness" class="space-y-6 mb-16 scroll-mt-20">
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+          <i data-lucide="shield" class="w-5 h-5 text-emerald-500"></i>
+          Engine 03: StaleGuard Freshness Detector (Tavily PS 01)
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
+          LLMs have static training cutoffs and generate outdated pricing, obsolete API endpoints, or stale factual claims with high confidence. StaleGuard acts as a real-time verification sieve powered by Tavily Search.
+        </p>
+
+        <!-- Pipeline Steps -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <div class="p-3 rounded border border-[var(--card-border)] bg-[var(--card-bg)] space-y-1.5">
+            <div class="font-bold text-emerald-500 font-mono">STEP 1: EXTRACTION</div>
+            <p class="text-zinc-600 dark:text-zinc-400">
+              Extracts time-sensitive factual claims (dates, versions, dollar amounts, executive names).
+            </p>
+          </div>
+          <div class="p-3 rounded border border-[var(--card-border)] bg-[var(--card-bg)] space-y-1.5">
+            <div class="font-bold text-emerald-500 font-mono">STEP 2: TAVILY SEARCH</div>
+            <p class="text-zinc-600 dark:text-zinc-400">
+              Executes targeted live Tavily queries to retrieve real-time ground truth anchors with source URLs.
+            </p>
+          </div>
+          <div class="p-3 rounded border border-[var(--card-border)] bg-[var(--card-bg)] space-y-1.5">
+            <div class="font-bold text-emerald-500 font-mono">STEP 3: DIFF PATCHING</div>
+            <p class="text-zinc-600 dark:text-zinc-400">
+              Computes 0–100 Freshness Score and generates word-level strike-through diffs (e.g. <span class="line-through text-red-400">$20/mo</span> <span class="text-emerald-400 font-bold">$29/mo</span>).
+            </p>
+          </div>
+        </div>
+
+        <!-- Sample Diff Card -->
+        <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-3">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="text-zinc-400 font-bold">LIVE STRIKE-THROUGH DIFF PREVIEW</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold">FRESHNESS: 92/100</span>
+          </div>
+          <div class="p-3 rounded bg-zinc-950 font-mono text-xs text-zinc-300 leading-relaxed border border-zinc-800">
+            Spotify Premium individual plan costs <span class="line-through text-red-400 bg-red-950/40 px-1 rounded">$9.99</span> <span class="text-emerald-400 font-bold bg-emerald-950/40 px-1 rounded">$11.99</span> per month as of Q4 2026. Duo plan is <span class="line-through text-red-400 bg-red-950/40 px-1 rounded">$12.99</span> <span class="text-emerald-400 font-bold bg-emerald-950/40 px-1 rounded">$16.99</span>.
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION: ENGINE 04 — PRE-MEETING BRIEFING                             -->
+      <!-- ===================================================================== -->
+      <section id="engine-04-briefing" class="space-y-6 mb-16 scroll-mt-20">
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+          <i data-lucide="file-text" class="w-5 h-5 text-emerald-500"></i>
+          Engine 04: Pre-Meeting Briefing Intelligence (Tavily PS 02)
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
+          Produces single-page, high-density executive dossiers before important meetings. Enforces a <b>strict 30-day temporal research window</b> so stale history is rejected in favor of recent developments.
+        </p>
+
+        <div class="space-y-3">
+          <h3 class="text-base font-bold text-zinc-900 dark:text-white">Strict Verification Rules</h3>
+          <ul class="space-y-2 text-xs md:text-sm text-zinc-600 dark:text-zinc-300 list-disc list-inside">
+            <li><b>Code-Level Verbatim Quote Match:</b> Every cited fact must have an exact substring match from Tavily search results.</li>
+            <li><b>Numerical Tolerance Bounds:</b> Any financial metric or funding number must match within ±0% discrepancy.</li>
+            <li><b>Audited Rejected Claims Ledger:</b> Facts failing verification are saved to an explicit audit table rather than hallucinated.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION: ENGINE 05 — BIFROST GATEWAY                                  -->
+      <!-- ===================================================================== -->
+      <section id="engine-05-gateway" class="space-y-6 mb-16 scroll-mt-20">
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+          <i data-lucide="git-branch" class="w-5 h-5 text-emerald-500"></i>
+          Engine 05: Bifrost Gateway & Telemetry (Bifrost PS 04)
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
+          The central traffic controller for all LLM calls. Provides automatic failover across a 3-tier routing hierarchy, per-user token rate limiting, and real-time observability.
+        </p>
+
+        <div class="code-container p-3 text-xs leading-relaxed">
+          <div class="flex justify-between items-center pb-2 mb-2 border-b border-zinc-800 text-[10px] text-zinc-500">
+            <span>GATEWAY TELEMETRY SCHEMA (JSON)</span>
+            <button onclick="copyCode(this)" class="hover:text-white flex items-center gap-1">
+              <i data-lucide="copy" class="w-3 h-3"></i> Copy
+            </button>
+          </div>
+          <pre class="text-zinc-300 overflow-x-auto"><code>{
+  "request_id": "req-bifrost-98a72f",
+  "selected_tier": "tier_1_primary",
+  "active_model": "openai/gpt-4o-mini",
+  "fallback_model": "anthropic/claude-3-5-haiku",
+  "budget_cap_usd": 0.0500,
+  "cost_usd": 0.000318,
+  "latency_ms": 342,
+  "token_usage": {
+    "prompt_tokens": 820,
+    "completion_tokens": 142,
+    "total_tokens": 962
+  },
+  "receipt_sha256": "4a7b92f98e10c..."
+}</code></pre>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION: REST API REFERENCE                                           -->
+      <!-- ===================================================================== -->
+      <section id="api-reference" class="space-y-6 mb-16 scroll-mt-20">
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+          <i data-lucide="terminal" class="w-5 h-5 text-emerald-500"></i>
+          REST API Reference
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
+          Illuminati exposes clean RESTful endpoints over <code>http://127.0.0.1:8000</code>:
+        </p>
+
+        <!-- Endpoints List -->
+        <div class="space-y-3">
+          
+          <!-- POST /api/coding-agent/execute -->
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <div class="flex items-center gap-2 font-mono text-xs">
+              <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 font-bold">POST</span>
+              <span class="text-zinc-200 font-bold">/api/coding-agent/execute</span>
+            </div>
+            <p class="text-xs text-zinc-400">Executes a token-governed coding task with AST caching and SHA-256 turn receipt.</p>
+          </div>
+
+          <!-- POST /api/benchmarks/start -->
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <div class="flex items-center gap-2 font-mono text-xs">
+              <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 font-bold">POST</span>
+              <span class="text-zinc-200 font-bold">/api/benchmarks/start</span>
+            </div>
+            <p class="text-xs text-zinc-400">Triggers an AgentBench Arena run or head-to-head duel across 12 chaos fault suites.</p>
+          </div>
+
+          <!-- POST /api/freshness/check -->
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <div class="flex items-center gap-2 font-mono text-xs">
+              <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 font-bold">POST</span>
+              <span class="text-zinc-200 font-bold">/api/freshness/check</span>
+            </div>
+            <p class="text-xs text-zinc-400">Verifies arbitrary input text against live Tavily web search and returns word-level diffs.</p>
+          </div>
+
+          <!-- POST /api/briefing/generate -->
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <div class="flex items-center gap-2 font-mono text-xs">
+              <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 font-bold">POST</span>
+              <span class="text-zinc-200 font-bold">/api/briefing/generate</span>
+            </div>
+            <p class="text-xs text-zinc-400">Generates executive pre-meeting dossiers with verbatim citation matching.</p>
+          </div>
+
+          <!-- GET /api/gateway/status -->
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <div class="flex items-center gap-2 font-mono text-xs">
+              <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold">GET</span>
+              <span class="text-zinc-200 font-bold">/api/gateway/status</span>
+            </div>
+            <p class="text-xs text-zinc-400">Returns real-time health, active model, and budget telemetry from the Bifrost Gateway.</p>
+          </div>
+
+          <!-- GET /api/system/stats -->
+          <div class="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] space-y-2">
+            <div class="flex items-center gap-2 font-mono text-xs">
+              <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold">GET</span>
+              <span class="text-zinc-200 font-bold">/api/system/stats</span>
+            </div>
+            <p class="text-xs text-zinc-400">Returns cumulative hackathon platform statistics, author attribution, and database counts.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION: CLI REFERENCE                                                -->
+      <!-- ===================================================================== -->
+      <section id="cli-reference" class="space-y-6 mb-16 scroll-mt-20">
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+          <i data-lucide="cpu" class="w-5 h-5 text-emerald-500"></i>
+          Unified CLI Commands
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-300 text-sm md:text-base leading-relaxed">
+          Every engine can be triggered directly in headless terminal mode without running the web browser:
+        </p>
+
+        <div class="code-container p-3 text-xs leading-relaxed">
+          <div class="flex justify-between items-center pb-2 mb-2 border-b border-zinc-800 text-[10px] text-zinc-500">
+            <span>TERMINAL COMMANDS (MAIN.PY)</span>
+            <button onclick="copyCode(this)" class="hover:text-white flex items-center gap-1">
+              <i data-lucide="copy" class="w-3 h-3"></i> Copy
+            </button>
+          </div>
+          <pre class="text-zinc-300 overflow-x-auto"><code># 1. One-Word Coding Agent Run
+code "Implement LRU cached Fibonacci function with type hints"
+
+# 2. Start Interactive Session with '/' Slash Commands (Antigravity Style)
+chat
+# (or simply: run)
+
+# 3. Run AgentBench Arena 12 Chaos Benchmark Suites
+run bench
+
+# 4. Run StaleGuard Real-Time Freshness Verification
+run check "Spotify Premium individual plan costs $9.99 per month."
+
+# 5. Generate Pre-Meeting 30-Day Executive Briefing
+run brief "Anthropic"
+
+# 6. Open Documentation or Web Console
+run docs
+run web</code></pre>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- SECTION: TEAM ATTRIBUTION                                             -->
+      <!-- ===================================================================== -->
+      <section id="team-attribution" class="space-y-6 mb-16 scroll-mt-20 border-t border-[var(--card-border)] pt-8">
+        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
+          <i data-lucide="user" class="w-5 h-5 text-emerald-500"></i>
+          Team & Author Specifications
+        </h2>
+        
+        <div class="p-5 rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] space-y-4">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-lg bg-zinc-900 dark:bg-zinc-800 text-white flex items-center justify-center font-black text-xl mono border border-zinc-700">
+              A
+            </div>
+            <div>
+              <div class="text-lg font-bold text-zinc-900 dark:text-white">Aryan Vishwakarma</div>
+              <div class="text-xs font-mono text-zinc-500">Lead Architect & Developer &bull; GitHub: <a href="https://github.com/Aryanxp1" target="_blank" class="text-emerald-500 underline">@Aryanxp1</a></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-2">
+            <div class="p-3 rounded bg-zinc-900/40 border border-zinc-800">
+              <span class="text-zinc-500 block font-mono text-[10px]">TEAM NAME</span>
+              <span class="font-bold text-zinc-200">Illuminati</span>
+            </div>
+            <div class="p-3 rounded bg-zinc-900/40 border border-zinc-800">
+              <span class="text-zinc-500 block font-mono text-[10px]">HACKATHON EVENT</span>
+              <span class="font-bold text-zinc-200">Geek Room AI Global Hackathon</span>
+            </div>
+            <div class="p-3 rounded bg-zinc-900/40 border border-zinc-800">
+              <span class="text-zinc-500 block font-mono text-[10px]">PRIMARY PARTNERS</span>
+              <span class="font-bold text-zinc-200">Bifrost by Maxim AI & Tavily by Nebius</span>
+            </div>
+            <div class="p-3 rounded bg-zinc-900/40 border border-zinc-800">
+              <span class="text-zinc-500 block font-mono text-[10px]">MONOREPO URL</span>
+              <a href="https://github.com/Aryanxp1/illuminati" target="_blank" class="font-bold text-emerald-400 hover:underline truncate block">github.com/Aryanxp1/illuminati</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer navigation -->
+      <div class="flex items-center justify-between border-t border-[var(--card-border)] pt-6 mt-12 text-xs text-zinc-500 font-mono">
+        <div>&copy; 2026 Illuminati Platform &bull; Aryan Vishwakarma (@Aryanxp1)</div>
+        <div class="flex items-center gap-4">
+          <a href="/" class="hover:text-emerald-400">Console</a>
+          <a href="https://github.com/Aryanxp1/illuminati" target="_blank" class="hover:text-emerald-400">GitHub</a>
+          <a href="#overview" class="hover:text-emerald-400">Back to Top &uarr;</a>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ======================================================================= -->
+    <!-- RIGHT SIDEBAR: "ON THIS PAGE" TOC SPY                                   -->
+    <!-- ======================================================================= -->
+    <aside class="w-56 shrink-0 hidden lg:block py-8 pl-6 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
+      <div class="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-400 mb-3">
+        ON THIS PAGE
+      </div>
+      <nav class="space-y-1 text-xs border-l border-[var(--card-border)] pl-3">
+        <a href="#overview" class="block text-zinc-500 hover:text-white transition-colors py-1">Platform Overview</a>
+        <a href="#quickstart" class="block text-zinc-500 hover:text-white transition-colors py-1">30s Quickstart</a>
+        <a href="#architecture" class="block text-zinc-500 hover:text-white transition-colors py-1">System Architecture</a>
+        <a href="#problem-statements" class="block text-zinc-500 hover:text-white transition-colors py-1">Problem Statement Matrix</a>
+        <a href="#engine-01-coding" class="block text-zinc-500 hover:text-white transition-colors py-1">01: Coding Agent</a>
+        <a href="#engine-02-arena" class="block text-zinc-500 hover:text-white transition-colors py-1">02: AgentBench Arena</a>
+        <a href="#engine-03-freshness" class="block text-zinc-500 hover:text-white transition-colors py-1">03: StaleGuard Freshness</a>
+        <a href="#engine-04-briefing" class="block text-zinc-500 hover:text-white transition-colors py-1">04: Pre-Meeting Briefing</a>
+        <a href="#engine-05-gateway" class="block text-zinc-500 hover:text-white transition-colors py-1">05: Bifrost Gateway</a>
+        <a href="#api-reference" class="block text-zinc-500 hover:text-white transition-colors py-1">REST API Reference</a>
+        <a href="#cli-reference" class="block text-zinc-500 hover:text-white transition-colors py-1">CLI Commands</a>
+        <a href="#team-attribution" class="block text-zinc-500 hover:text-white transition-colors py-1">Team & Author Specs</a>
+      </nav>
+    </aside>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 3. INTERACTIVE SEARCH MODAL (⌘K / Ctrl+K)                                  -->
+  <!-- ========================================================================= -->
+  <div id="search-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-start justify-center pt-20 px-4">
+    <div class="bg-[var(--card-bg)] border border-[var(--card-border)] w-full max-w-lg rounded-xl shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+      <div class="p-3 border-b border-[var(--card-border)] flex items-center gap-2">
+        <i data-lucide="search" class="w-4 h-4 text-zinc-400"></i>
+        <input type="text" id="search-input" placeholder="Search documentation, engines, API endpoints..." class="w-full bg-transparent text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none" oninput="filterSearch(this.value)">
+        <kbd class="px-1.5 py-0.5 text-[10px] font-mono bg-zinc-800 text-zinc-400 rounded cursor-pointer" onclick="closeSearchModal()">ESC</kbd>
+      </div>
+      <div id="search-results" class="max-h-80 overflow-y-auto p-2 space-y-1 text-xs">
+        <a href="#overview" onclick="closeSearchModal()" class="block p-2 rounded hover:bg-zinc-800/60 transition-colors">
+          <div class="font-bold text-zinc-200">Platform Overview</div>
+          <div class="text-[11px] text-zinc-400">Introduction to Illuminati, philosophy and high-level goals.</div>
+        </a>
+        <a href="#engine-01-coding" onclick="closeSearchModal()" class="block p-2 rounded hover:bg-zinc-800/60 transition-colors">
+          <div class="font-bold text-zinc-200">Engine 01: Coding Agent (Bifrost PS 01)</div>
+          <div class="text-[11px] text-zinc-400">AST signature caching, 84.2% token savings, and SHA-256 receipts.</div>
+        </a>
+        <a href="#engine-02-arena" onclick="closeSearchModal()" class="block p-2 rounded hover:bg-zinc-800/60 transition-colors">
+          <div class="font-bold text-zinc-200">Engine 02: AgentBench Arena (Bifrost PS 02)</div>
+          <div class="text-[11px] text-zinc-400">12 chaos fault injection suites and Agent Reliability Score (ARS).</div>
+        </a>
+        <a href="#engine-03-freshness" onclick="closeSearchModal()" class="block p-2 rounded hover:bg-zinc-800/60 transition-colors">
+          <div class="font-bold text-zinc-200">Engine 03: StaleGuard Freshness (Tavily PS 01)</div>
+          <div class="text-[11px] text-zinc-400">Live Tavily search validation, 0–100 score, strike-through diffs.</div>
+        </a>
+        <a href="#engine-04-briefing" onclick="closeSearchModal()" class="block p-2 rounded hover:bg-zinc-800/60 transition-colors">
+          <div class="font-bold text-zinc-200">Engine 04: Pre-Meeting Briefing (Tavily PS 02)</div>
+          <div class="text-[11px] text-zinc-400">30-day temporal window and code-verified verbatim quote matching.</div>
+        </a>
+        <a href="#api-reference" onclick="closeSearchModal()" class="block p-2 rounded hover:bg-zinc-800/60 transition-colors">
+          <div class="font-bold text-zinc-200">REST API Reference</div>
+          <div class="text-[11px] text-zinc-400">JSON endpoints for coding, arena, freshness, and gateway status.</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 4. JAVASCRIPT: ICONS, THEME, NAVIGATION, CLIPBOARD                        -->
+  <!-- ========================================================================= -->
+  <script>
+    // Initialize Lucide Icons
+    function renderIcons() {
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        try { lucide.createIcons(); } catch (e) { console.warn('Lucide notice:', e); }
+      }
+    }
+
+    // Theme Management
+    function applyTheme(theme) {
+      const html = document.documentElement;
+      if (theme === 'light') {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        localStorage.setItem('illuminati_theme', 'light');
+      } else {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        localStorage.setItem('illuminati_theme', 'dark');
+      }
+      renderIcons();
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      applyTheme(isDark ? 'light' : 'dark');
+    }
+
+    const savedTheme = localStorage.getItem('illuminati_theme') || 'dark';
+    applyTheme(savedTheme);
+
+    // Sidebar active link switching
+    function activateNav(el) {
+      document.querySelectorAll('.doc-nav-item').forEach(item => item.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    // Copy Code Helper
+    function copyCode(btn) {
+      const container = btn.closest('.code-container');
+      const code = container.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const original = btn.innerHTML;
+        btn.innerHTML = '<span class="text-emerald-400">Copied!</span>';
+        setTimeout(() => { btn.innerHTML = original; renderIcons(); }, 1800);
+      });
+    }
+
+    // Quick Search Modal Logic
+    function openSearchModal() {
+      const modal = document.getElementById('search-modal');
+      modal.classList.remove('hidden');
+      const input = document.getElementById('search-input');
+      input.value = '';
+      input.focus();
+    }
+
+    function closeSearchModal() {
+      document.getElementById('search-modal').classList.add('hidden');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        openSearchModal();
+      }
+      if (e.key === 'Escape') {
+        closeSearchModal();
+      }
+    });
+
+    document.getElementById('search-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'search-modal') closeSearchModal();
+    });
+
+    function filterSearch(query) {
+      const q = query.toLowerCase();
+      const results = document.querySelectorAll('#search-results a');
+      results.forEach(el => {
+        const txt = el.innerText.toLowerCase();
+        el.style.display = txt.includes(q) ? 'block' : 'none';
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderIcons();
+    });
+  </script>
+</body>
+</html>

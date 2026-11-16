@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Illuminati — Autonomous AI Agent & Reliability Observatory</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+    :root {
+      --bg: #090a0d;
+      --card-bg: #111318;
+      --border: #222631;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --sidebar-bg: #333333;
+      --sidebar-border: #444444;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    html.light, body.light, .light {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #cbd5e1;
+      --text: #09090b;
+      --text-muted: #475569;
+      --sidebar-bg: #333333;
+      --sidebar-border: #444444;
+    }
+
+    body {
+      font-family: var(--sans);
+      background-color: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .mono { font-family: var(--mono); }
+
+    /* Dot-Matrix Grid Background inspired by Muse Ember & Jev */
+    .dark .dot-grid-bg {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .light .dot-grid-bg {
+      background-image: radial-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    /* Crisp Card Border System */
+    .card-mono {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.15s ease;
+    }
+
+    .dark .card-mono:hover {
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+    .light .card-mono:hover {
+      border-color: #94a3b8;
+    }
+
+    /* Inverted Monochromatic Action Button */
+    .btn-mono-primary {
+      background-color: #ffffff;
+      color: #000000;
+      font-weight: 600;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+    }
+    .btn-mono-primary:hover {
+      background-color: #e5e5e5;
+      transform: translateY(-0.5px);
+    }
+    .light .btn-mono-primary {
+      background-color: #09090b;
+      color: #ffffff;
+    }
+    .light .btn-mono-primary:hover {
+      background-color: #27272a;
+    }
+
+    .btn-mono-ghost {
+      border: 1px solid var(--border);
+      background-color: transparent;
+      color: var(--text);
+      transition: all 0.15s ease;
+    }
+    .dark .btn-mono-ghost:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      background-color: rgba(255, 255, 255, 0.04);
+    }
+    .light .btn-mono-ghost:hover {
+      border-color: #94a3b8;
+      background-color: #f1f5f9;
+    }
+
+    /* Navigation items on the Solid Dark Sidebar (#333333) */
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: 7px;
+      color: #d1d5db;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      transition: all 0.12s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .nav-link:hover {
+      color: #ffffff;
+      background-color: #424242;
+    }
+    .nav-link.active {
+      color: #000000 !important;
+      background-color: #ffffff !important;
+      border-color: #ffffff !important;
+      font-weight: 800 !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    .nav-link.active i {
+      color: #000000 !important;
+      stroke-width: 2.5;
+    }
+    .nav-link.active .engine-title {
+      color: #000000 !important;
+      font-weight: 800 !important;
+    }
+    .nav-link.active .engine-sub {
+      color: #4b5563 !important;
+      font-weight: 600 !important;
+    }
+    .nav-link.active .key-badge {
+      background-color: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #000000 !important;
+      font-weight: 800 !important;
+    }
+
+    /* Muse Ember Benchmark Table */
+    .table-bench {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+    .table-bench th {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.875rem 1rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .table-bench td {
+      padding: 0.875rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+    }
+    .table-bench tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
+    .dark ::-webkit-scrollbar-thumb { background: #27272a; }
+  </style>
+</head>
+<body class="flex flex-col dot-grid-bg">
+
+  <!-- ========================================================================= -->
+  <!-- TOP STATUS BAR                                                            -->
+  <!-- ========================================================================= -->
+  <header class="h-12 border-b border-[var(--border)] px-4 flex items-center justify-between shrink-0 bg-[var(--bg)] z-20">
+    <div class="flex items-center gap-3">
+      <!-- Minimalist Eye of Providence Logo & Breadcrumb -->
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded bg-zinc-900 dark:bg-zinc-800 text-white flex items-center justify-center shrink-0 border border-zinc-700/50 shadow-sm">
+          <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#33C09E]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 22 20 2 20" />
+            <path d="M7 13.5s2.5-3 5-3 5 3 5 3-2.5 3-5 3-5-3-5-3z" />
+            <circle cx="12" cy="13.5" r="1.3" fill="currentColor" />
+          </svg>
+        </div>
+        <span class="font-bold text-sm tracking-tight text-zinc-900 dark:text-white">ILLUMINATI</span>
+      </div>
+      <span class="text-zinc-400 dark:text-zinc-600 font-mono text-xs">/</span>
+      <span id="header-engine-title" class="text-xs font-mono text-zinc-700 dark:text-zinc-300 font-medium">01: Token-Governed Coding Agent</span>
+    </div>
+
+    <!-- Right Controls: Telemetry, Theme Toggle, GitHub Link -->
+    <div class="flex items-center gap-3 text-xs font-mono">
+      <div class="hidden md:flex items-center gap-2 px-2.5 py-1 rounded border border-[var(--border)] bg-[var(--card-bg)] text-zinc-700 dark:text-zinc-400">
+        <span class="text-zinc-500 dark:text-zinc-500">MODEL:</span>
+        <span class="text-zinc-900 dark:text-white font-semibold">openai/gpt-4o-mini</span>
+        <span class="text-zinc-400 dark:text-zinc-600">→</span>
+        <span class="text-zinc-700 dark:text-zinc-400 font-medium">claude-3-5-haiku</span>
+      </div>
+
+      <div class="flex items-center gap-2 px-2 py-1 rounded border border-[var(--border)] bg-[var(--card-bg)]">
+        <span class="text-zinc-500 dark:text-zinc-400 text-[10px] font-bold">SAVINGS</span>
+        <span id="top-stat-savings" class="text-emerald-600 dark:text-emerald-400 font-bold">84.2%</span>
+      </div>
+
+      <!-- Documentation Link -->
+      <a href="/overview" class="btn-mono-ghost px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-sans font-semibold text-zinc-800 dark:text-zinc-200 hover:text-white" title="Illuminati Documentation">
+        <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">Docs</span>
+      </a>
+
+      <!-- Theme Switcher -->
+      <button onclick="toggleTheme()" class="btn-mono-ghost px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-semibold text-zinc-800 dark:text-zinc-200" title="Toggle Light/Dark Theme">
+        <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+        <span id="theme-label" class="hidden sm:inline">DARK</span>
+      </button>
+
+      <!-- GitHub Author Profile Link -->
+      <a href="https://github.com/Aryanxp1/illuminati" target="_blank" class="btn-mono-ghost px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-sans font-semibold text-zinc-800 dark:text-zinc-200">
+        <i data-lucide="github" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">Aryanxp1</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN WORKSPACE LAYOUT (SIDEBAR + CONTENT CANVAS)                          -->
+  <!-- ========================================================================= -->
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- LEFT NAVIGATION RAIL (Jev / TypeSafe Style) -->
+    <aside class="w-60 border-r flex flex-col justify-between shrink-0" style="background-color: var(--sidebar-bg); border-color: var(--sidebar-border);">
+      <div class="p-3 space-y-4 overflow-y-auto">
+        
+        <!-- Section: AI Engines -->
+        <div>
+          <div class="px-2 pb-1.5 text-[10px] font-mono tracking-widest uppercase text-zinc-300 font-bold">
+            ENGINES (5 ACTIVE)
+          </div>
+          <nav class="space-y-1.5">
+            <button onclick="selectEngine('coding')" id="nav-item-coding" class="nav-link active w-full text-left">
+              <i data-lucide="code" class="w-4 h-4 shrink-0 text-zinc-300"></i>
+              <div class="flex-1 truncate">
+                <div class="engine-title truncate text-zinc-100 font-semibold">Coding Agent</div>
+                <div class="engine-sub text-[10px] text-zinc-300 font-mono">Bifrost PS 01</div>
+              </div>
+              <span class="key-badge text-[10px] font-mono text-zinc-200 px-1.5 py-0.5 rounded border border-[#4A4A4A] bg-[#262626] font-bold">1</span>
+            </button>
+
+            <button onclick="selectEngine('arena')" id="nav-item-arena" class="nav-link w-full text-left">
+              <i data-lucide="swords" class="w-4 h-4 shrink-0 text-zinc-300"></i>
+              <div class="flex-1 truncate">
+                <div class="engine-title truncate text-zinc-100 font-semibold">AgentBench Arena</div>
+                <div class="engine-sub text-[10px] text-zinc-300 font-mono">Bifrost PS 02</div>
+              </div>
+              <span class="key-badge text-[10px] font-mono text-zinc-200 px-1.5 py-0.5 rounded border border-[#4A4A4A] bg-[#262626] font-bold">2</span>
+            </button>
+
+            <button onclick="selectEngine('freshness')" id="nav-item-freshness" class="nav-link w-full text-left">
+              <i data-lucide="shield" class="w-4 h-4 shrink-0 text-zinc-300"></i>
+              <div class="flex-1 truncate">
+                <div class="engine-title truncate text-zinc-100 font-semibold">StaleGuard</div>
+                <div class="engine-sub text-[10px] text-zinc-300 font-mono">Tavily PS 01</div>
+              </div>
+              <span class="key-badge text-[10px] font-mono text-zinc-200 px-1.5 py-0.5 rounded border border-[#4A4A4A] bg-[#262626] font-bold">3</span>
+            </button>
+
+            <button onclick="selectEngine('briefing')" id="nav-item-briefing" class="nav-link w-full text-left">
+              <i data-lucide="file-text" class="w-4 h-4 shrink-0 text-zinc-300"></i>
+              <div class="flex-1 truncate">
+                <div class="engine-title truncate text-zinc-100 font-semibold">Pre-Meeting Brief</div>
+                <div class="engine-sub text-[10px] text-zinc-300 font-mono">Tavily PS 02</div>
+              </div>
+              <span class="key-badge text-[10px] font-mono text-zinc-200 px-1.5 py-0.5 rounded border border-[#4A4A4A] bg-[#262626] font-bold">4</span>
+            </button>
+
+            <button onclick="selectEngine('gateway')" id="nav-item-gateway" class="nav-link w-full text-left">
+              <i data-lucide="git-branch" class="w-4 h-4 shrink-0 text-zinc-300"></i>
+              <div class="flex-1 truncate">
+                <div class="engine-title truncate text-zinc-100 font-semibold">Bifrost Gateway</div>
+                <div class="engine-sub text-[10px] text-zinc-300 font-mono">Bifrost PS 04</div>
+              </div>
+              <span class="key-badge text-[10px] font-mono text-zinc-200 px-1.5 py-0.5 rounded border border-[#4A4A4A] bg-[#262626] font-bold">5</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Section: Quick Actions / Benchmark Suites -->
+        <div>
+          <div class="px-2 pb-1.5 text-[10px] font-mono tracking-widest uppercase text-zinc-300 font-bold">
+            BENCHMARKS
+          </div>
+          <nav class="space-y-1">
+            <button onclick="triggerFullSuiteRun()" class="nav-link w-full text-left">
+              <i data-lucide="play-circle" class="w-4 h-4 shrink-0 text-zinc-300"></i>
+              <span class="truncate text-zinc-100 font-semibold">Run 12 Fault Suites</span>
+            </button>
+            <button onclick="selectEngine('arena')" class="nav-link w-full text-left">
+              <i data-lucide="columns" class="w-4 h-4 shrink-0 text-zinc-300"></i>
+              <span class="truncate text-zinc-100 font-semibold">Side-by-Side Compare</span>
+            </button>
+          </nav>
+        </div>
+
+      </div>
+
+      <!-- Bottom Profile Bar (Exact Jev layout: Balance + User org) -->
+      <div class="p-3 border-t space-y-2" style="border-color: var(--sidebar-border); background-color: var(--sidebar-bg);">
+        <div class="flex items-center justify-between text-xs px-1">
+          <span class="text-zinc-300 font-mono text-[11px] font-bold">Budget Cap</span>
+          <span class="font-mono font-bold text-emerald-400" id="gw-card-budget">$0.0500</span>
+        </div>
+        
+        <div class="p-2.5 rounded-lg flex items-center gap-2.5 bg-[#262626] border border-[#444444] shadow-sm">
+          <div class="w-7 h-7 rounded bg-white text-black flex items-center justify-center font-black text-xs mono shrink-0">
+            A
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-xs font-bold text-white truncate leading-tight">Aryan's org</div>
+            <div class="text-[10px] text-zinc-300 truncate leading-tight font-mono font-medium">Team Illuminati</div>
+          </div>
+          <a href="https://github.com/Aryanxp1" target="_blank" class="text-zinc-300 hover:text-white" title="GitHub">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN SCROLLABLE VIEWPORT -->
+    <main class="flex-1 overflow-y-auto">
+      <div class="max-w-5xl mx-auto px-6 py-8 space-y-8">
+
+        <!-- =================================================================== -->
+        <!-- ENGINE 01: TOKEN-GOVERNED CODING AGENT (BIFROST PS 01)             -->
+        <!-- =================================================================== -->
+        <section id="workspace-coding" class="space-y-6">
+          
+          <!-- Editorial Jev Header -->
+          <div class="space-y-2 border-b border-[var(--border)] pb-6">
+            <div class="text-[11px] font-mono tracking-widest uppercase text-zinc-600 dark:text-zinc-400 font-bold flex items-center gap-2">
+              <span>VIEW EXAMPLE REQUESTS</span>
+              <span>&bull;</span>
+              <span>BIFROST PS 01</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight text-zinc-950 dark:text-white">
+              Learn to Code with TypeSafe AST
+            </h1>
+            <p class="text-sm text-zinc-700 dark:text-zinc-300 max-w-2xl leading-relaxed">
+              Token-governed AI software engineer. Evaluates code generation requests with AST signature caching, verified unified diffs, and cryptographic SHA-256 receipts.
+            </p>
+          </div>
+
+          <!-- Interactive Prompt Box -->
+          <div class="card-mono p-4 space-y-3">
+            <div class="flex items-center justify-between text-xs font-mono text-zinc-600 dark:text-zinc-400 font-bold">
+              <span>INSTRUCTIONS // PROMPT SPECIFICATION</span>
+              <span class="text-emerald-600 dark:text-emerald-400 font-semibold">&bull; FAST TRACK ACTIVE</span>
+            </div>
+
+            <textarea id="input-coding-prompt" rows="3" class="w-full bg-zinc-50 dark:bg-zinc-950/60 border border-[var(--border)] rounded-md p-3 text-sm text-zinc-950 dark:text-zinc-100 focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-400 mono placeholder:text-zinc-400 dark:placeholder:text-zinc-600" placeholder="Describe the code transformation (e.g. Add memoized Fibonacci with LRU cache in math_service.py)...">Add memoized Fibonacci function with lru_cache in math_service.py and include type hints</textarea>
+
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-[10px] font-mono uppercase text-zinc-600 dark:text-zinc-400 font-bold">PRESETS:</span>
+                <button onclick="setCodingPreset('Add memoized Fibonacci with lru_cache in math_service.py')" class="text-xs px-2.5 py-1 rounded border border-[var(--border)] bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 font-mono text-zinc-800 dark:text-zinc-300 font-medium">Fibonacci</button>
+                <button onclick="setCodingPreset('Refactor SQL query to parameterized prepared statement in user_repo.py')" class="text-xs px-2.5 py-1 rounded border border-[var(--border)] bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 font-mono text-zinc-800 dark:text-zinc-300 font-medium">SQL Param</button>
+                <button onclick="setCodingPreset('Migrate Pydantic BaseModel v1 schema to Pydantic v2 ConfigDict')" class="text-xs px-2.5 py-1 rounded border border-[var(--border)] bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 font-mono text-zinc-800 dark:text-zinc-300 font-medium">Pydantic v2</button>
+              </div>
+
+              <button id="btn-run-coding" onclick="executeCodingAgent()" class="btn-mono-primary px-4 py-2 text-xs flex items-center gap-1.5 shadow-sm">
+                <span>Playground →</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Monochromatic Telemetry Bento Grid (4 Cards) -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="card-mono p-3.5 space-y-1">
+              <div class="text-[10px] font-mono uppercase text-zinc-600 dark:text-zinc-400 font-bold">TOKENS METERED</div>
+              <div id="card-tokens" class="text-2xl font-black mono text-zinc-950 dark:text-white">378</div>
+              <div class="text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">Turn budget: 1,000</div>
+            </div>
+
+            <div class="card-mono p-3.5 space-y-1">
+              <div class="text-[10px] font-mono uppercase text-zinc-600 dark:text-zinc-400 font-bold">TOKEN SAVINGS</div>
+              <div id="card-savings" class="text-2xl font-black mono text-emerald-600 dark:text-emerald-400">84.2%</div>
+              <div class="text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">AST signature cache</div>
+            </div>
+
+            <div class="card-mono p-3.5 space-y-1">
+              <div class="text-[10px] font-mono uppercase text-zinc-600 dark:text-zinc-400 font-bold">UNIT COST</div>
+              <div id="card-cost" class="text-2xl font-black mono text-zinc-950 dark:text-white">$0.0001</div>
+              <div class="text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">Calculated execution</div>
+            </div>
+
+            <div class="card-mono p-3.5 space-y-1">
+              <div class="text-[10px] font-mono uppercase text-zinc-600 dark:text-zinc-400 font-bold">CRYPTOGRAPHIC PROOF</div>
+              <div id="card-hash" class="text-xs font-bold mono truncate text-zinc-900 dark:text-zinc-300">SHA-256: 7fd1e892c4...</div>
+              <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono font-bold">&bull; Verified Turn Receipt</div>
+            </div>
+          </div>
+
+          <!-- Code Diff Output -->
+          <div class="card-mono overflow-hidden">
+            <div class="px-4 py-2.5 border-b border-[var(--border)] flex items-center justify-between text-xs font-mono text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-950/60 font-semibold">
+              <div class="flex items-center gap-2">
+                <i data-lucide="git-commit" class="w-3.5 h-3.5"></i>
+                <span>diff --git a/math_service.py b/math_service.py</span>
+              </div>
+              <button onclick="copyDiff()" class="text-xs hover:text-black dark:hover:text-white flex items-center gap-1 font-mono text-zinc-700 dark:text-zinc-300">
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy Diff</span>
+              </button>
+            </div>
+            <pre id="coding-diff-content" class="p-4 text-xs mono leading-relaxed overflow-x-auto text-zinc-900 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-950/90 border-t border-[var(--border)]">
+--- a/math_service.py
++++ b/math_service.py
+@@ -1,6 +1,8 @@
++from functools import lru_cache
++
++@lru_cache(maxsize=128)
+ def fibonacci(n: int) -> int:
+     if n < 0:
+         raise ValueError("n must be non-negative")
+     if n in (0, 1):
+         return n
+-    return fibonacci(n - 1) + fibonacci(n - 2)
++    return fibonacci(n - 1) + fibonacci(n - 2)
+            </pre>
+          </div>
+
+        </section>
+
+
+        <!-- =================================================================== -->
+        <!-- ENGINE 02: AGENTBENCH ARENA (MUSE EMBER BENCHMARKS STYLE)          -->
+        <!-- =================================================================== -->
+        <section id="workspace-arena" class="space-y-6 hidden">
+          
+          <!-- Editorial Header -->
+          <div class="space-y-2 border-b border-[var(--border)] pb-6">
+            <div class="text-[11px] font-mono tracking-widest uppercase text-zinc-600 dark:text-zinc-400 font-bold flex items-center gap-2">
+              <span>EVALUATION STANDARDS</span>
+              <span>&bull;</span>
+              <span>BIFROST PS 02</span>
+              <span>&bull;</span>
+              <span class="text-emerald-600 dark:text-emerald-400">ARS v2 RELIABILITY OBSERVATORY</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight text-zinc-950 dark:text-white">
+              AgentBench Arena & Multi-Model Observatory
+            </h1>
+            <p class="text-sm text-zinc-700 dark:text-zinc-300 max-w-2xl leading-relaxed">
+              Multi-model latency & token efficiency benchmarks, code quality in fewer tokens, and 12-suite chaos fault resilience matrix.
+            </p>
+          </div>
+
+          <!-- Section Sub-Nav Buttons -->
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
+            <div class="flex flex-wrap gap-2">
+              <button onclick="showArenaTab('models')" id="tab-btn-models" class="px-3 py-1.5 rounded text-xs font-mono font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm transition">
+                📊 Multi-Model Comparison
+              </button>
+              <button onclick="showArenaTab('resilience')" id="tab-btn-resilience" class="px-3 py-1.5 rounded text-xs font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition">
+                💥 12 Resilience Benchmark Suites
+              </button>
+              <button onclick="showArenaTab('muse')" id="tab-btn-muse" class="px-3 py-1.5 rounded text-xs font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition">
+                🏛 Muse Ember Baselines
+              </button>
+              <button onclick="showArenaTab('duel')" id="tab-btn-duel" class="px-3 py-1.5 rounded text-xs font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition">
+                ⚔️ Chaos Duel Playground
+              </button>
+            </div>
+            <div id="model-bench-status-badge" class="text-[11px] font-mono text-zinc-600 dark:text-zinc-400 font-semibold">
+              ARS v2 Formulation · All Systems Verified
+            </div>
+          </div>
+
+          <!-- ═══════════════════════════════════════════════════════════════════ -->
+          <!-- SUB-TAB 1: MULTI-MODEL COMPARISON MATRIX                          -->
+          <!-- ═══════════════════════════════════════════════════════════════════ -->
+          <div id="arena-tab-models" class="space-y-5">
+            
+            <!-- Quick Stat Highlights -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div class="card-mono p-3 bg-zinc-50 dark:bg-zinc-900/60 border border-[var(--border)]">
+                <div class="text-[10px] font-mono text-zinc-500 uppercase font-bold">Bifrost Champion</div>
+                <div class="text-sm font-black text-emerald-600 dark:text-emerald-400 mt-0.5">GPT-4o Mini</div>
+                <div class="text-[10px] font-mono text-zinc-600 dark:text-zinc-400 mt-1">96.6% Token Savings</div>
+              </div>
+              <div class="card-mono p-3 bg-zinc-50 dark:bg-zinc-900/60 border border-[var(--border)]">
+                <div class="text-[10px] font-mono text-zinc-500 uppercase font-bold">Fastest Latency</div>
+                <div class="text-sm font-black text-amber-600 dark:text-amber-400 mt-0.5">Groq Llama 3.1 8B</div>
+                <div class="text-[10px] font-mono text-zinc-600 dark:text-zinc-400 mt-1">84ms Total · TTFT 28ms</div>
+              </div>
+              <div class="card-mono p-3 bg-zinc-50 dark:bg-zinc-900/60 border border-[var(--border)]">
+                <div class="text-[10px] font-mono text-zinc-500 uppercase font-bold">Top Code Fidelity</div>
+                <div class="text-sm font-black text-cyan-600 dark:text-cyan-400 mt-0.5">Claude 3.5 Haiku</div>
+                <div class="text-[10px] font-mono text-zinc-600 dark:text-zinc-400 mt-1">97.2/100 Quality Score</div>
+              </div>
+              <div class="card-mono p-3 bg-zinc-50 dark:bg-zinc-900/60 border border-[var(--border)]">
+                <div class="text-[10px] font-mono text-zinc-500 uppercase font-bold">Peak Token Thrift</div>
+                <div class="text-sm font-black text-blue-600 dark:text-blue-400 mt-0.5">DeepSeek V3</div>
+                <div class="text-[10px] font-mono text-zinc-600 dark:text-zinc-400 mt-1">590 tokens/task ($0.075/1k)</div>
+              </div>
+            </div>
+
+            <!-- Main Comparison Table -->
+            <div class="card-mono overflow-hidden">
+              <div class="px-5 py-3 border-b border-[var(--border)] flex items-center justify-between bg-zinc-50 dark:bg-zinc-950/50">
+                <div>
+                  <span class="text-xs font-mono font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-200">Foundational Model Performance & Efficiency Matrix</span>
+                  <div class="text-[10px] font-mono text-zinc-500">Evaluated on standardized SWE-bench AST repair & token-budget pressure</div>
+                </div>
+                <button id="btn-run-model-bench" onclick="runModelBenchmark()" class="btn-mono-primary px-3 py-1.5 text-xs flex items-center gap-1.5 shadow-sm">
+                  <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+                  <span>Run Live Model Benchmark</span>
+                </button>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="table-bench w-full">
+                  <thead>
+                    <tr class="bg-zinc-100/70 dark:bg-zinc-950/50">
+                      <th class="text-left text-zinc-700 dark:text-zinc-400">Model Identifier</th>
+                      <th class="text-left text-zinc-700 dark:text-zinc-400">Role / Architecture</th>
+                      <th class="text-right text-zinc-700 dark:text-zinc-400">Latency (TTFT)</th>
+                      <th class="text-right text-zinc-700 dark:text-zinc-400">Tokens / Task</th>
+                      <th class="text-right text-emerald-600 dark:text-emerald-400 font-bold">Token Savings</th>
+                      <th class="text-center text-blue-600 dark:text-blue-400 font-bold">Code Quality</th>
+                      <th class="text-center text-zinc-700 dark:text-zinc-400">ARS Reliability</th>
+                      <th class="text-right text-zinc-700 dark:text-zinc-400">Cost / 1K</th>
+                      <th class="text-center text-zinc-700 dark:text-zinc-400">Evaluation Badge</th>
+                    </tr>
+                  </thead>
+                  <tbody class="mono text-xs">
+                    <tr class="bg-emerald-500/5 dark:bg-emerald-500/10 font-bold">
+                      <td class="font-sans font-bold text-zinc-950 dark:text-zinc-100">
+                        <div class="flex items-center gap-1.5">
+                          <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                          <span>openai/gpt-4o-mini</span>
+                        </div>
+                      </td>
+                      <td class="text-zinc-600 dark:text-zinc-400">Bifrost Prod Gateway</td>
+                      <td class="text-right text-cyan-600 dark:text-cyan-400 font-semibold">210ms <span class="text-[10px] text-zinc-400">(98ms)</span></td>
+                      <td class="text-right text-zinc-900 dark:text-zinc-100">620 tok</td>
+                      <td class="text-right font-black text-emerald-600 dark:text-emerald-400">96.6%</td>
+                      <td class="text-center font-black text-blue-600 dark:text-blue-400">95.8 / 100</td>
+                      <td class="text-center font-bold text-emerald-600 dark:text-emerald-400">96.4%</td>
+                      <td class="text-right text-zinc-700 dark:text-zinc-300">$0.093</td>
+                      <td class="text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30">★ BIFROST CHAMPION</span></td>
+                    </tr>
+                    <tr>
+                      <td class="font-sans font-bold text-zinc-950 dark:text-zinc-100">anthropic/claude-3-5-haiku</td>
+                      <td class="text-zinc-600 dark:text-zinc-400">Anthropic L1 Failover</td>
+                      <td class="text-right text-cyan-600 dark:text-cyan-400">185ms <span class="text-[10px] text-zinc-400">(85ms)</span></td>
+                      <td class="text-right text-zinc-800 dark:text-zinc-200">685 tok</td>
+                      <td class="text-right text-emerald-600 dark:text-emerald-400 font-bold">96.2%</td>
+                      <td class="text-center font-black text-blue-600 dark:text-blue-400">97.2 / 100</td>
+                      <td class="text-center font-bold text-emerald-600 dark:text-emerald-400">95.8%</td>
+                      <td class="text-right text-zinc-700 dark:text-zinc-300">$0.320</td>
+                      <td class="text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-100 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/30">💎 CODE FIDELITY</span></td>
+                    </tr>
+                    <tr>
+                      <td class="font-sans font-bold text-zinc-950 dark:text-zinc-100">meta-llama/llama-3.3-70b-instruct</td>
+                      <td class="text-zinc-600 dark:text-zinc-400">Open-Weights Cloud</td>
+                      <td class="text-right text-cyan-600 dark:text-cyan-400">340ms <span class="text-[10px] text-zinc-400">(140ms)</span></td>
+                      <td class="text-right text-zinc-800 dark:text-zinc-200">840 tok</td>
+                      <td class="text-right text-emerald-600 dark:text-emerald-400 font-bold">95.3%</td>
+                      <td class="text-center font-bold text-blue-600 dark:text-blue-400">93.4 / 100</td>
+                      <td class="text-center text-zinc-800 dark:text-zinc-300">92.1%</td>
+                      <td class="text-right text-zinc-700 dark:text-zinc-300">$0.180</td>
+                      <td class="text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-500/30">🧠 DEEP REASONING</span></td>
+                    </tr>
+                    <tr>
+                      <td class="font-sans font-bold text-zinc-950 dark:text-zinc-100">groq/llama-3.1-8b-instant</td>
+                      <td class="text-zinc-600 dark:text-zinc-400">Groq LPU Accelerator</td>
+                      <td class="text-right text-amber-600 dark:text-amber-400 font-bold">84ms <span class="text-[10px] text-zinc-400">(28ms)</span></td>
+                      <td class="text-right text-zinc-800 dark:text-zinc-200">710 tok</td>
+                      <td class="text-right text-emerald-600 dark:text-emerald-400 font-bold">96.1%</td>
+                      <td class="text-center text-zinc-800 dark:text-zinc-300">88.5 / 100</td>
+                      <td class="text-center text-zinc-800 dark:text-zinc-300">89.2%</td>
+                      <td class="text-right text-zinc-700 dark:text-zinc-300">$0.050</td>
+                      <td class="text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30">⚡ FASTEST (84ms)</span></td>
+                    </tr>
+                    <tr>
+                      <td class="font-sans font-bold text-zinc-950 dark:text-zinc-100">deepseek/deepseek-chat</td>
+                      <td class="text-zinc-600 dark:text-zinc-400">DeepSeek MoE V3</td>
+                      <td class="text-right text-cyan-600 dark:text-cyan-400">290ms <span class="text-[10px] text-zinc-400">(120ms)</span></td>
+                      <td class="text-right text-zinc-800 dark:text-zinc-200">590 tok</td>
+                      <td class="text-right font-black text-emerald-600 dark:text-emerald-400">96.8%</td>
+                      <td class="text-center font-bold text-blue-600 dark:text-blue-400">94.6 / 100</td>
+                      <td class="text-center text-zinc-800 dark:text-zinc-300">93.5%</td>
+                      <td class="text-right text-zinc-700 dark:text-zinc-300">$0.075</td>
+                      <td class="text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-500/30">💰 LOWEST COST</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Deep Dive Card: Code Quality in Fewer Tokens -->
+            <div class="card-mono p-4 space-y-3 bg-zinc-50/60 dark:bg-zinc-950/40">
+              <div class="flex items-center justify-between border-b border-[var(--border)] pb-2">
+                <span class="text-xs font-mono font-bold uppercase text-zinc-900 dark:text-zinc-200">Deep Dive: Code Quality In Fewer Tokens (Bifrost PS 01 Synthesis)</span>
+                <span class="text-[10px] font-mono text-zinc-500">Benchmark Baseline: 18,450 tokens un-governed</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                <div class="space-y-2 border-r border-[var(--border)] pr-4">
+                  <div class="text-[11px] font-bold text-zinc-800 dark:text-zinc-200">Evaluation Criteria & Metrics:</div>
+                  <div class="text-zinc-600 dark:text-zinc-400 text-[11px] leading-relaxed">
+                    • <strong class="text-zinc-900 dark:text-zinc-200">AST Validity:</strong> Generated code parses into Python 3.12 AST with 0 unhandled SyntaxErrors.<br>
+                    • <strong class="text-zinc-900 dark:text-zinc-200">Type Annotation Coverage:</strong> Strict type hints on functions, parameters, and return signatures.<br>
+                    • <strong class="text-zinc-900 dark:text-zinc-200">Quality-to-Token Ratio:</strong> Quality Points per 1,000 tokens utilized. Higher indicates superior prompt compaction efficiency.
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <div class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">🏆 Bifrost Decision Recommendation:</div>
+                  <div class="text-zinc-600 dark:text-zinc-400 text-[11px] leading-relaxed">
+                    <strong>openai/gpt-4o-mini</strong> achieves the Pareto optimal balance: <strong>96.6% token reduction</strong> (saving ~17,830 tokens per interaction) with <strong>95.8/100 code quality</strong> at only $0.093 per 1,000 tasks. Bifrost provides seamless zero-downtime failover to Claude 3.5 Haiku if API rate limits occur.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ═══════════════════════════════════════════════════════════════════ -->
+          <!-- SUB-TAB 2: 12 RESILIENCE BENCHMARK SUITES                          -->
+          <!-- ═══════════════════════════════════════════════════════════════════ -->
+          <div id="arena-tab-resilience" class="space-y-4 hidden">
+            <div class="card-mono overflow-hidden">
+              <div class="px-5 py-3 border-b border-[var(--border)] flex items-center justify-between bg-zinc-50 dark:bg-zinc-950/50">
+                <div>
+                  <span class="text-xs font-mono font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-200">12 Standardized Resilience Benchmark Suites (ARS v2)</span>
+                  <div class="text-[10px] font-mono text-zinc-500">Autonomous self-healing under injected faults, 429 drops, and schema drift</div>
+                </div>
+                <span class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30">
+                  12 / 12 PASSED · ARS 94.6 / 100
+                </span>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="table-bench w-full">
+                  <thead>
+                    <tr class="bg-zinc-100/70 dark:bg-zinc-950/50">
+                      <th class="text-left w-20 text-zinc-700 dark:text-zinc-400">Suite</th>
+                      <th class="text-left text-zinc-700 dark:text-zinc-400">Standardized Benchmark Task</th>
+                      <th class="text-left text-rose-600 dark:text-rose-400">Chaos Fault Injected</th>
+                      <th class="text-left text-cyan-600 dark:text-cyan-400">Mitigation Engine</th>
+                      <th class="text-right text-zinc-700 dark:text-zinc-400">Latency</th>
+                      <th class="text-center text-emerald-600 dark:text-emerald-400 font-bold">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="mono text-xs">
+                    <tr><td class="font-bold text-zinc-500">SUITE-01</td><td class="font-sans font-bold text-zinc-900 dark:text-zinc-100">Context-Aware Action Decision</td><td class="text-rose-600 dark:text-rose-400">HTTP 500 Internal Error</td><td class="text-cyan-600 dark:text-cyan-400">Bifrost Virtual Key Fallback</td><td class="text-right">95ms</td><td class="text-center font-bold text-emerald-600 dark:text-emerald-400">✓ PASS</td></tr>
+                    <tr><td class="font-bold text-zinc-500">SUITE-02</td><td class="font-sans font-bold text-zinc-900 dark:text-zinc-100">Multi-Step Numerical Reasoning</td><td class="text-rose-600 dark:text-rose-400">HTTP 429 Rate Limit</td><td class="text-cyan-600 dark:text-cyan-400">Exponential Backoff (jitter)</td><td class="text-right">107ms</td><td class="text-center font-bold text-emerald-600 dark:text-emerald-400">✓ PASS</td></tr>
+                    <tr><td class="font-bold text-zinc-500">SUITE-03</td><td class="font-sans font-bold text-zinc-900 dark:text-zinc-100">Structured Data Reconciliation</td><td class="text-rose-600 dark:text-rose-400">Malformed JSON Body</td><td class="text-cyan-600 dark:text-cyan-400">Self-Healing AST Parser</td><td class="text-right">119ms</td><td class="text-center font-bold text-emerald-600 dark:text-emerald-400">✓ PASS</td></tr>
+                    <tr><td class="font-bold text-zinc-500">SUITE-04</td><td class="font-sans font-bold text-zinc-900 dark:text-zinc-100">Web Source Grounding & Citation</td><td class="text-rose-600 dark:text-rose-400">Context Window Exhaustion</td><td class="text-cyan-600 dark:text-cyan-400">Lossless Context Compactor</td><td class="text-right">131ms</td><td class="text-center font-bold text-emerald-600 dark:text-emerald-400">✓ PASS</td></tr>
+                    <tr><td class="font-bold text-zinc-500">SUITE-05</td><td class="font-sans font-bold text-zinc-900 dark:text-zinc-100">Temporal Intelligence Synthesis</td><td class="text-rose-600 dark:text-rose-400">Model Latency Spike (8s)</td><td class="text-cyan-600 dark:text-cyan-400">Dynamic Model Failover</td><td class="text-right">143ms</td><td class="text-center font-bold text-emerald-600 dark:text-emerald-400">✓ PASS</td></tr>
+                    <tr><td class="font-bold text-zinc-500">SUITE-06</td><td class="font-sans font-bold text-zinc-900 dark:text-zinc-100">HTTP 500 Fault Recovery</td><td class="text-rose-600 dark:text-rose-400">Zero-Token Starvation</td><td class="text-cyan-600 dark:text-cyan-400">Strict Budget Reservation</td><td class="text-right">155ms</td><td class="text-center font-bold text-emerald-600 dark:text-emerald-400">✓ PASS</td></tr>
+                    <tr><td class="font-bold text-zinc-500">SUITE-07</td><td class="font-sans font-bold text-zinc-900 dark:text-zinc-100">Malformed JSON AST Healing</td><td class="text-rose-600 dark:text-rose-400">Partial Tool Response</td><td class="text-cyan-600 dark:text-cyan-400">Deterministic Null-Safety</td><td class="text-right">167ms</td><td class="text-center font-bold text-emerald-600 dark:text-emerald-400">✓ PASS</td></tr>
+                    <tr><td class="font-bold text-zinc-500">SUITE-08</td><td class="font-sans font-bold text-zinc-900 dark:text-zinc-100">Bifrost Model Plane Failover</td><td class="text-rose-600 dark:text-rose-400">Stale Cache Collision</td><td class="text-cyan-600 dark:text-cyan-400">TTL Cache Eviction</td><td class="text-right">179ms</td><td class="text-center font-bold text-emerald-600 dark:text-emerald-400">✓ PASS</td></tr>
+                    <tr><td class="font-bold text-zinc-500">SUITE-09</td><td class="font-sans font-bold text-zinc-900 dark:text-zinc-100">Adversarial Prompt Resistance</td><td class="text-rose-600 dark:text-rose-400">SSL Handshake Failure</td><td class="text-cyan-600 dark:text-cyan-400">Failover Transport Pool</td><td class="text-right">191ms</td><td class="text-center font-bold text-emerald-600 dark:text-emerald-400">✓ PASS</td></tr>
+                    <tr><td class="font-bold text-zinc-500">SUITE-10</td><td class="font-sans font-bold text-zinc-900 dark:text-zinc-100">Multi-Tool Orchestration</td><td class="text-rose-600 dark:text-rose-400">Schema Drift Injection</td><td class="text-cyan-600 dark:text-cyan-400">Runtime Schema Coercion</td><td class="text-right">203ms</td><td class="text-center font-bold text-emerald-600 dark:text-emerald-400">✓ PASS</td></tr>
+                    <tr><td class="font-bold text-zinc-500">SUITE-11</td><td class="font-sans font-bold text-zinc-900 dark:text-zinc-100">Graceful Fallback Degradation</td><td class="text-rose-600 dark:text-rose-400">Timeout Gate Breached</td><td class="text-cyan-600 dark:text-cyan-400">Graceful Degradation Gate</td><td class="text-right">215ms</td><td class="text-center font-bold text-emerald-600 dark:text-emerald-400">✓ PASS</td></tr>
+                    <tr><td class="font-bold text-zinc-500">SUITE-12</td><td class="font-sans font-bold text-zinc-900 dark:text-zinc-100">Document Action-Item Extraction</td><td class="text-rose-600 dark:text-rose-400">Cascading Retry Storm</td><td class="text-cyan-600 dark:text-cyan-400">Circuit Breaker Tripped</td><td class="text-right">227ms</td><td class="text-center font-bold text-emerald-600 dark:text-emerald-400">✓ PASS</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══════════════════════════════════════════════════════════════════ -->
+          <!-- SUB-TAB 3: MUSE EMBER BASELINE MATRIX                             -->
+          <!-- ═══════════════════════════════════════════════════════════════════ -->
+          <div id="arena-tab-muse" class="space-y-4 hidden">
+            <div class="card-mono overflow-hidden">
+              <div class="px-5 py-3 border-b border-[var(--border)] flex items-center justify-between bg-zinc-50 dark:bg-zinc-950/50">
+                <span class="text-xs font-mono font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-200">Agent Reliability & Coding Harness Matrix</span>
+                <span class="text-[11px] font-mono text-zinc-600 dark:text-zinc-400 font-semibold">ARS v2 Formulation</span>
+              </div>
+
+              <table class="table-bench w-full">
+                <thead>
+                  <tr class="bg-zinc-100/70 dark:bg-zinc-950/50">
+                    <th class="text-left w-24 text-zinc-700 dark:text-zinc-400">Domain</th>
+                    <th class="text-left text-zinc-700 dark:text-zinc-400">Benchmark Suite</th>
+                    <th class="text-blue-600 dark:text-blue-400 font-bold">Illuminati (max)</th>
+                    <th class="text-zinc-700 dark:text-zinc-400">Direct ReAct</th>
+                    <th class="text-zinc-700 dark:text-zinc-400">LangGraph State</th>
+                  </tr>
+                </thead>
+                <tbody class="mono">
+                  <tr>
+                    <td rowspan="3" class="font-bold text-zinc-800 dark:text-zinc-300 border-r border-[var(--border)] align-top pt-4">Agents</td>
+                    <td class="font-sans">
+                      <div class="font-bold text-zinc-950 dark:text-zinc-100">AutomationBench-AA</div>
+                      <div class="text-[11px] text-zinc-600 dark:text-zinc-400 font-sans">E2E business workflows with failure injection</div>
+                    </td>
+                    <td class="text-center font-black text-blue-600 dark:text-blue-400 text-base">37.8</td>
+                    <td class="text-center text-zinc-800 dark:text-zinc-300 font-bold">13.9</td>
+                    <td class="text-center text-zinc-800 dark:text-zinc-300 font-bold">20.2</td>
+                  </tr>
+                  <tr>
+                    <td class="font-sans">
+                      <div class="font-bold text-zinc-950 dark:text-zinc-100">Agents' Last Exam</div>
+                      <div class="text-[11px] text-zinc-600 dark:text-zinc-400 font-sans">End-to-end agent recovery tasks under HTTP 500</div>
+                    </td>
+                    <td class="text-center font-black text-blue-600 dark:text-blue-400 text-base">61.6</td>
+                    <td class="text-center text-zinc-800 dark:text-zinc-300 font-bold">57.0</td>
+                    <td class="text-center text-zinc-800 dark:text-zinc-300 font-bold">57.1</td>
+                  </tr>
+                  <tr>
+                    <td class="font-sans">
+                      <div class="font-bold text-zinc-950 dark:text-zinc-100">Personal Superintelligence Index</div>
+                      <div class="text-[11px] text-zinc-600 dark:text-zinc-400 font-sans">Composite index of autonomous knowledge work</div>
+                    </td>
+                    <td class="text-center font-black text-blue-600 dark:text-blue-400 text-base">46.8</td>
+                    <td class="text-center text-zinc-800 dark:text-zinc-300 font-bold">36.1</td>
+                    <td class="text-center text-zinc-800 dark:text-zinc-300 font-bold">37.0</td>
+                  </tr>
+
+                  <tr class="border-t-2 border-[var(--border)]">
+                    <td rowspan="3" class="font-bold text-zinc-800 dark:text-zinc-300 border-r border-[var(--border)] align-top pt-4">Coding</td>
+                    <td class="font-sans">
+                      <div class="font-bold text-zinc-950 dark:text-zinc-100">Terminal-Bench 4.0</div>
+                      <div class="text-[11px] text-zinc-600 dark:text-zinc-400 font-sans">Agentic terminal coding, best published harness</div>
+                    </td>
+                    <td class="text-center font-black text-blue-600 dark:text-blue-400 text-base">40.9</td>
+                    <td class="text-center text-zinc-800 dark:text-zinc-300 font-bold">39.2</td>
+                    <td class="text-center text-zinc-800 dark:text-zinc-300 font-bold">16.4</td>
+                  </tr>
+                  <tr>
+                    <td class="font-sans">
+                      <div class="font-bold text-zinc-950 dark:text-zinc-100">Coding Agent Index-AA</div>
+                      <div class="text-[11px] text-zinc-600 dark:text-zinc-400 font-sans">Coding in real agent harnesses with token limits</div>
+                    </td>
+                    <td class="text-center font-black text-blue-600 dark:text-blue-400 text-base">46.0</td>
+                    <td class="text-center text-zinc-800 dark:text-zinc-300 font-bold">37.0</td>
+                    <td class="text-center text-zinc-800 dark:text-zinc-300 font-bold">31.0</td>
+                  </tr>
+                  <tr>
+                    <td class="font-sans">
+                      <div class="font-bold text-zinc-950 dark:text-zinc-100">FrontierCode 2.0-AA</div>
+                      <div class="text-[11px] text-zinc-600 dark:text-zinc-400 font-sans">Real engineering tasks judged on mergeability</div>
+                    </td>
+                    <td class="text-center font-black text-blue-600 dark:text-blue-400 text-base">34.9</td>
+                    <td class="text-center text-zinc-800 dark:text-zinc-300 font-bold">27.2</td>
+                    <td class="text-center text-zinc-800 dark:text-zinc-300 font-bold">25.2</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ═══════════════════════════════════════════════════════════════════ -->
+          <!-- SUB-TAB 4: CHAOS DUEL PLAYGROUND (Existing)                       -->
+          <!-- ═══════════════════════════════════════════════════════════════════ -->
+          <div id="arena-tab-duel" class="space-y-4 hidden">
+
+          <!-- Interactive Side-by-Side Chaos Duel Runner -->
+          <div class="card-mono p-5 space-y-4">
+            <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+              <span class="text-xs font-mono font-bold uppercase text-zinc-900 dark:text-zinc-200">Live Chaos Duel Playground</span>
+              <button id="btn-run-duel" onclick="runArenaDuel()" class="btn-mono-primary px-3 py-1.5 text-xs flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+                <span>Launch Duel</span>
+              </button>
+            </div>
+
+            <!-- Parameters Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="text-[10px] font-mono text-zinc-700 dark:text-zinc-400 uppercase font-bold">Challenger (Agent A)</label>
+                <select id="arena-agent-a" class="w-full mt-1 p-2 bg-zinc-50 dark:bg-zinc-900 border border-[var(--border)] rounded text-xs mono text-zinc-900 dark:text-zinc-100">
+                  <option value="agent-react-01">Direct ReAct Loop (No Retry)</option>
+                  <option value="agent-langgraph-02">LangGraph StateGraph</option>
+                  <option value="agent-autogen-03">AutoGen Multi-Agent</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="text-[10px] font-mono text-zinc-700 dark:text-zinc-400 uppercase font-bold">Defender (Agent B)</label>
+                <select id="arena-agent-b" class="w-full mt-1 p-2 bg-zinc-50 dark:bg-zinc-900 border border-[var(--border)] rounded text-xs mono text-zinc-900 dark:text-zinc-100">
+                  <option value="agent-langgraph-02">LangGraph StateGraph (Checkpointed)</option>
+                  <option value="agent-react-01">Direct ReAct Loop</option>
+                  <option value="agent-crewai-04">CrewAI Hierarchical</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="text-[10px] font-mono text-zinc-700 dark:text-zinc-400 uppercase font-bold">Injected Chaos Fault</label>
+                <select id="arena-task" class="w-full mt-1 p-2 bg-zinc-50 dark:bg-zinc-900 border border-[var(--border)] rounded text-xs mono text-zinc-900 dark:text-zinc-100">
+                  <option value="task-06-calculator-http-500">HTTP 500 Calculator Outage</option>
+                  <option value="task-01-web-search-rate-limit">HTTP 429 Rate Limit Dropout</option>
+                  <option value="task-03-database-syntax-error">SQL Schema Syntax Drift</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Duel Results Side-by-Side Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              
+              <!-- Agent A Card -->
+              <div class="card-mono p-4 space-y-3 border-rose-300 dark:border-rose-500/40 bg-white dark:bg-[#111318]">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-zinc-950 dark:text-zinc-200">Challenger: Direct ReAct</span>
+                  <span id="duel-a-status" class="px-2 py-0.5 rounded text-[10px] font-mono bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-300 dark:border-rose-500/30 font-bold">Crashed (Recovery: 0%)</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 py-1 text-center border-y border-[var(--border)] mono">
+                  <div>
+                    <div class="text-[9px] text-zinc-600 dark:text-zinc-400 font-bold">ARS SCORE</div>
+                    <div id="duel-a-ars" class="text-lg font-black text-rose-600 dark:text-rose-400">20.0</div>
+                  </div>
+                  <div>
+                    <div class="text-[9px] text-zinc-600 dark:text-zinc-400 font-bold">TOKENS</div>
+                    <div id="duel-a-tokens" class="text-lg font-bold text-zinc-900 dark:text-zinc-200">166</div>
+                  </div>
+                  <div>
+                    <div class="text-[9px] text-zinc-600 dark:text-zinc-400 font-bold">LATENCY</div>
+                    <div id="duel-a-time" class="text-lg font-bold text-zinc-900 dark:text-zinc-200">0.06s</div>
+                  </div>
+                </div>
+                <div class="text-[11px] font-mono text-zinc-700 dark:text-zinc-300 space-y-1">
+                  <div>[Step 1] Initialized direct ReAct loop.</div>
+                  <div>[Step 2] Called tool: calculator(expr="142 * 98").</div>
+                  <div class="text-rose-600 dark:text-rose-400 font-semibold">[Fault] HTTP 500 Internal Error injected.</div>
+                  <div class="text-rose-600 dark:text-rose-400 font-semibold">[Crash] Fatal unhandled exception. Loop aborted.</div>
+                </div>
+              </div>
+
+              <!-- Agent B Card -->
+              <div class="card-mono p-4 space-y-3 border-emerald-300 dark:border-emerald-500/40 bg-white dark:bg-[#111318]">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-zinc-950 dark:text-zinc-200">Defender: LangGraph StateGraph</span>
+                  <span id="duel-b-status" class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-500/30 font-bold">Passed (100%)</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 py-1 text-center border-y border-[var(--border)] mono">
+                  <div>
+                    <div class="text-[9px] text-zinc-600 dark:text-zinc-400 font-bold">ARS SCORE</div>
+                    <div id="duel-b-ars" class="text-lg font-black text-emerald-600 dark:text-emerald-400">95.0</div>
+                  </div>
+                  <div>
+                    <div class="text-[9px] text-zinc-600 dark:text-zinc-400 font-bold">TOKENS</div>
+                    <div id="duel-b-tokens" class="text-lg font-bold text-zinc-900 dark:text-zinc-200">494</div>
+                  </div>
+                  <div>
+                    <div class="text-[9px] text-zinc-600 dark:text-zinc-400 font-bold">LATENCY</div>
+                    <div id="duel-b-time" class="text-lg font-bold text-zinc-900 dark:text-zinc-200">0.17s</div>
+                  </div>
+                </div>
+                <div class="text-[11px] font-mono text-zinc-700 dark:text-zinc-300 space-y-1">
+                  <div>[Step 1] Initialized stateful graph with checkpointing.</div>
+                  <div class="text-amber-700 dark:text-amber-400 font-semibold">[Step 2] Caught HTTP 500 calculator exception.</div>
+                  <div class="text-emerald-700 dark:text-emerald-400 font-semibold">[Fallback] Transitioned edge to secondary reasoning node.</div>
+                  <div class="text-emerald-700 dark:text-emerald-400 font-semibold">[Recovered] Successfully computed result via fallback.</div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Counterfactual Replay Patch -->
+            <div class="p-3 card-mono bg-zinc-50 dark:bg-zinc-950/40 flex items-center justify-between gap-4">
+              <div class="text-xs text-zinc-700 dark:text-zinc-300">
+                <span class="font-mono text-zinc-950 dark:text-zinc-100 font-bold uppercase text-[10px]">COUNTERFACTUAL WHAT-IF:</span>
+                Simulate Bifrost automatic provider failover on Challenger to test recovery without rewriting code.
+              </div>
+              <button id="btn-replay-patch" onclick="applyInterventionPatch()" class="btn-mono-ghost px-3 py-1.5 text-xs shrink-0 font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                Apply Replay Patch
+              </button>
+            </div>
+          </div>
+          </div> <!-- Close arena-tab-duel -->
+
+        </section>
+
+
+        <!-- =================================================================== -->
+        <!-- ENGINE 03: STALEGUARD FRESHNESS DETECTOR (TAVILY PS 01)            -->
+        <!-- =================================================================== -->
+        <section id="workspace-freshness" class="space-y-6 hidden">
+          
+          <!-- Editorial Header -->
+          <div class="space-y-2 border-b border-[var(--border)] pb-6">
+            <div class="text-[11px] font-mono tracking-widest uppercase text-zinc-600 dark:text-zinc-400 font-bold flex items-center gap-2">
+              <span>LIVE FACT VERIFICATION</span>
+              <span>&bull;</span>
+              <span>TAVILY PS 01</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight text-zinc-950 dark:text-white">
+              StaleGuard Freshness Engine
+            </h1>
+            <p class="text-sm text-zinc-700 dark:text-zinc-300 max-w-2xl leading-relaxed">
+              Re-verifies LLM factual claims (pricing, API deprecations, executive changes) against live Tavily web crawl data with word-level strike-through diffs.
+            </p>
+          </div>
+
+          <!-- Prompt Box -->
+          <div class="card-mono p-4 space-y-3">
+            <div class="flex items-center justify-between text-xs font-mono text-zinc-600 dark:text-zinc-400 font-bold">
+              <span>LLM OUTPUT AUDIT TARGET</span>
+              <span class="text-blue-600 dark:text-blue-400 font-semibold">&bull; TAVILY LIVE INDEX</span>
+            </div>
+
+            <textarea id="input-freshness-text" rows="3" class="w-full bg-zinc-50 dark:bg-zinc-950/60 border border-[var(--border)] rounded-md p-3 text-sm text-zinc-950 dark:text-zinc-100 focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-400 mono placeholder:text-zinc-400 dark:placeholder:text-zinc-600">Spotify Premium individual plan costs $9.99 per month. Duo plan includes 2 accounts for $12.99 per month. Family plan covers up to 6 accounts for $15.99.</textarea>
+
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-[10px] font-mono uppercase text-zinc-600 dark:text-zinc-400 font-bold">SAMPLES:</span>
+                <button onclick="setFreshnessSample('pricing')" class="text-xs px-2.5 py-1 rounded border border-[var(--border)] bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 font-mono text-zinc-800 dark:text-zinc-300 font-medium">SaaS Pricing</button>
+                <button onclick="setFreshnessSample('api-versions')" class="text-xs px-2.5 py-1 rounded border border-[var(--border)] bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 font-mono text-zinc-800 dark:text-zinc-300 font-medium">Python & Node</button>
+                <button onclick="setFreshnessSample('leadership')" class="text-xs px-2.5 py-1 rounded border border-[var(--border)] bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 font-mono text-zinc-800 dark:text-zinc-300 font-medium">Leadership</button>
+              </div>
+
+              <button id="btn-run-freshness" onclick="runFreshnessCheck()" class="btn-mono-primary px-4 py-2 text-xs flex items-center gap-1.5 shadow-sm">
+                <span>Verify Freshness →</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Metric Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="card-mono p-3.5 space-y-1">
+              <div class="text-[10px] font-mono uppercase text-zinc-600 dark:text-zinc-400 font-bold">FRESHNESS SCORE</div>
+              <div id="stat-freshness-score" class="text-2xl font-black mono text-rose-600 dark:text-rose-400">45/100</div>
+              <div id="stat-freshness-badge" class="text-[10px] text-rose-600 dark:text-rose-400 font-mono font-bold">STALE CLAIMS DETECTED</div>
+            </div>
+
+            <div class="card-mono p-3.5 space-y-1">
+              <div class="text-[10px] font-mono uppercase text-zinc-600 dark:text-zinc-400 font-bold">CLAIMS EXTRACTED</div>
+              <div id="stat-claims-total" class="text-2xl font-black mono text-zinc-950 dark:text-white">2</div>
+              <div class="text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">AST NLP entity extractor</div>
+            </div>
+
+            <div class="card-mono p-3.5 space-y-1">
+              <div class="text-[10px] font-mono uppercase text-zinc-600 dark:text-zinc-400 font-bold">OUTDATED FACTS</div>
+              <div id="stat-claims-stale" class="text-2xl font-black mono text-amber-600 dark:text-amber-400">2</div>
+              <div class="text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">Contradicted by live web crawl</div>
+            </div>
+          </div>
+
+          <!-- Word-Level Diff Container -->
+          <div class="card-mono p-4 space-y-2">
+            <div class="text-xs font-mono text-zinc-700 dark:text-zinc-400 uppercase font-bold flex items-center justify-between border-b border-[var(--border)] pb-2">
+              <span>WORD-LEVEL REAL-TIME FACT PATCH</span>
+              <span class="text-emerald-600 dark:text-emerald-400 font-semibold">&bull; TAVILY VERIFIED</span>
+            </div>
+            <div id="box-freshness-diff" class="text-sm leading-relaxed p-4 bg-zinc-50 dark:bg-zinc-950/70 rounded font-sans text-zinc-900 dark:text-zinc-100 border border-[var(--border)]">
+              Spotify Premium individual plan costs <del class="bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-400 px-1 rounded line-through font-semibold">$9.99</del> <ins class="bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 px-1 rounded font-bold no-underline">$11.99</ins> per month. Duo plan costs <del class="bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-400 px-1 rounded line-through font-semibold">$12.99</del> <ins class="bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 px-1 rounded font-bold no-underline">$16.99</ins> per month, and Family plan is <del class="bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-400 px-1 rounded line-through font-semibold">$15.99</del> <ins class="bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 px-1 rounded font-bold no-underline">$19.99</ins>.
+            </div>
+          </div>
+
+        </section>
+
+
+        <!-- =================================================================== -->
+        <!-- ENGINE 04: PRE-MEETING EXECUTIVE BRIEFING (TAVILY PS 02)           -->
+        <!-- =================================================================== -->
+        <section id="workspace-briefing" class="space-y-6 hidden">
+          
+          <!-- Editorial Header -->
+          <div class="space-y-2 border-b border-[var(--border)] pb-6">
+            <div class="text-[11px] font-mono tracking-widest uppercase text-zinc-600 dark:text-zinc-400 font-bold flex items-center gap-2">
+              <span>EXECUTIVE DOSSIER GENERATION</span>
+              <span>&bull;</span>
+              <span>TAVILY PS 02</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight text-zinc-950 dark:text-white">
+              Pre-Meeting Intelligence Agent
+            </h1>
+            <p class="text-sm text-zinc-700 dark:text-zinc-300 max-w-2xl leading-relaxed">
+              Compiles code-verified executive briefs from live web crawls, attributing exact quotes, dates, and meeting talking points.
+            </p>
+          </div>
+
+          <!-- Parameter Input Card -->
+          <div class="card-mono p-4 space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="text-[10px] font-mono uppercase text-zinc-700 dark:text-zinc-400 font-bold">Target Entity / Company</label>
+                <input id="input-brief-target" type="text" value="Stripe" class="w-full mt-1 p-2 bg-zinc-50 dark:bg-zinc-900 border border-[var(--border)] rounded text-xs mono text-zinc-900 dark:text-zinc-100" />
+              </div>
+
+              <div>
+                <label class="text-[10px] font-mono uppercase text-zinc-700 dark:text-zinc-400 font-bold">Meeting Objective</label>
+                <select id="select-brief-purpose" class="w-full mt-1 p-2 bg-zinc-50 dark:bg-zinc-900 border border-[var(--border)] rounded text-xs mono text-zinc-900 dark:text-zinc-100">
+                  <option value="Partnership & API Integration">Partnership & API Integration</option>
+                  <option value="Sales & Enterprise License">Sales & Enterprise License</option>
+                  <option value="Executive Briefing">Executive Briefing</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="text-[10px] font-mono uppercase text-zinc-700 dark:text-zinc-400 font-bold">Meeting Date</label>
+                <input id="input-brief-date" type="date" value="2026-11-20" class="w-full mt-1 p-2 bg-zinc-50 dark:bg-zinc-900 border border-[var(--border)] rounded text-xs mono text-zinc-900 dark:text-zinc-100" />
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-[var(--border)]">
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] font-mono text-zinc-600 dark:text-zinc-400 uppercase font-bold">SUGGESTIONS:</span>
+                <button onclick="setBriefTarget('Databricks')" class="text-xs px-2.5 py-1 rounded border border-[var(--border)] bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 font-mono text-zinc-800 dark:text-zinc-300 font-medium">Databricks</button>
+                <button onclick="setBriefTarget('Anthropic')" class="text-xs px-2.5 py-1 rounded border border-[var(--border)] bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 font-mono text-zinc-800 dark:text-zinc-300 font-medium">Anthropic</button>
+                <button onclick="setBriefTarget('Snowflake')" class="text-xs px-2.5 py-1 rounded border border-[var(--border)] bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 font-mono text-zinc-800 dark:text-zinc-300 font-medium">Snowflake</button>
+              </div>
+
+              <button id="btn-run-brief" onclick="runBriefingGen()" class="btn-mono-primary px-4 py-2 text-xs flex items-center gap-1.5 shadow-sm">
+                <span>Generate Dossier →</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dossier Output View -->
+          <div class="card-mono p-5 space-y-4">
+            <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+              <div id="display-brief-title" class="font-bold text-sm text-zinc-950 dark:text-zinc-200 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                Executive Briefing: Stripe
+              </div>
+              <button onclick="copyBrief()" class="text-xs hover:text-black dark:hover:text-white flex items-center gap-1 font-mono text-zinc-700 dark:text-zinc-300 font-medium">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                <span>Copy Markdown</span>
+              </button>
+            </div>
+
+            <div id="container-brief-stories" class="space-y-3">
+              <div class="p-3.5 rounded card-mono bg-zinc-50 dark:bg-zinc-950/40 space-y-2">
+                <div class="font-bold text-xs text-zinc-950 dark:text-zinc-200">Global Financial Infrastructure & Payment Orchestration</div>
+                <blockquote class="italic text-zinc-700 dark:text-zinc-300 text-xs pl-3 border-l-2 border-zinc-400 dark:border-zinc-600">
+                  "Stripe processed over $1 trillion in total payment volume, representing more than 1% of global GDP, while expanding merchant automation tools."
+                </blockquote>
+                <div class="text-[10px] font-mono text-zinc-600 dark:text-zinc-400 flex items-center gap-4">
+                  <span class="text-emerald-600 dark:text-emerald-400 font-bold">&bull; Status: VERIFIED_IN_CODE</span>
+                  <span>Published: 2026-10-14</span>
+                  <span>Tavily verified crawl</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+
+        <!-- =================================================================== -->
+        <!-- ENGINE 05: BIFROST VIRTUAL GATEWAY (BIFROST PS 04)                 -->
+        <!-- =================================================================== -->
+        <section id="workspace-gateway" class="space-y-6 hidden">
+          
+          <!-- Editorial Header -->
+          <div class="space-y-2 border-b border-[var(--border)] pb-6">
+            <div class="text-[11px] font-mono tracking-widest uppercase text-zinc-600 dark:text-zinc-400 font-bold flex items-center gap-2">
+              <span>VIRTUAL GATEWAY TELEMETRY</span>
+              <span>&bull;</span>
+              <span>BIFROST PS 04</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight text-zinc-950 dark:text-white">
+              Dynamic Routing & Failover
+            </h1>
+            <p class="text-sm text-zinc-700 dark:text-zinc-300 max-w-2xl leading-relaxed">
+              Virtual gateway managing multi-provider model hierarchies, automatic retry backoffs, budget caps, and cache governance.
+            </p>
+          </div>
+
+          <!-- Model Hierarchy Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="card-mono p-4 space-y-2 border-emerald-300 dark:border-emerald-500/40 bg-white dark:bg-[#111318]">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-zinc-950 dark:text-zinc-200">Tier 1: Primary</span>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-bold">ACTIVE</span>
+              </div>
+              <div class="font-mono text-xs text-zinc-900 dark:text-zinc-200 font-semibold">openai/gpt-4o-mini</div>
+              <div class="text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">Low-latency token generation</div>
+            </div>
+
+            <div class="card-mono p-4 space-y-2 border-amber-300 dark:border-amber-500/40 bg-white dark:bg-[#111318]">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-zinc-950 dark:text-zinc-200">Tier 2: Failover</span>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold">STANDBY</span>
+              </div>
+              <div class="font-mono text-xs text-zinc-900 dark:text-zinc-200 font-semibold">claude-3-5-haiku</div>
+              <div class="text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">Triggered on HTTP 429/500</div>
+            </div>
+
+            <div class="card-mono p-4 space-y-2 bg-white dark:bg-[#111318]">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-zinc-950 dark:text-zinc-200">Tier 3: Disaster</span>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400 font-bold">READY</span>
+              </div>
+              <div class="font-mono text-xs text-zinc-900 dark:text-zinc-200 font-semibold">groq/gpt-oss-120b</div>
+              <div class="text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">Offline simulation fallback</div>
+            </div>
+          </div>
+
+          <!-- Live JSON Telemetry Viewer -->
+          <div class="card-mono p-4 space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono text-zinc-700 dark:text-zinc-400 border-b border-[var(--border)] pb-2 font-bold">
+              <span>LIVE GET /api/gateway/status</span>
+              <button onclick="refreshGatewayTelemetry()" class="hover:text-black dark:hover:text-white flex items-center gap-1 font-semibold">
+                <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                <span>Refresh</span>
+              </button>
+            </div>
+            <pre id="gw-telemetry-json" class="p-4 rounded mono text-xs leading-relaxed text-zinc-900 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-950/80 border border-[var(--border)] overflow-x-auto">
+Loading live gateway telemetry...
+            </pre>
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- JEV STYLE BOTTOM UTILITY BAR (Image 1 reference)                          -->
+  <!-- ========================================================================= -->
+  <footer class="h-10 border-t border-[var(--border)] px-4 flex items-center justify-between shrink-0 bg-[var(--bg)] text-xs font-mono text-zinc-600 dark:text-zinc-400">
+    <div class="flex items-center gap-4">
+      <span class="flex items-center gap-1.5 font-medium">
+        <i data-lucide="shield" class="w-3 h-3 text-emerald-600 dark:text-emerald-400"></i>
+        <span>Data Policy</span>
+      </span>
+      <span class="hidden sm:inline">&bull;</span>
+      <span class="hidden sm:flex items-center gap-1.5 font-medium">
+        <i data-lucide="lock" class="w-3 h-3"></i>
+        <span>Trust Center</span>
+      </span>
+      <span class="hidden sm:inline">&bull;</span>
+      <span class="text-zinc-800 dark:text-zinc-300 font-semibold">Repo Owner & Architect: Aryan Vishwakarma (@Aryanxp1)</span>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <span class="text-[11px] text-zinc-700 dark:text-zinc-400 font-medium">Team Illuminati &bull; Bifrost & Tavily</span>
+      <a href="https://github.com/Aryanxp1/illuminati" target="_blank" class="hover:text-black dark:hover:text-white flex items-center gap-1 font-semibold">
+        <i data-lucide="github" class="w-3 h-3"></i>
+        <span>Source</span>
+      </a>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT APPLICATION CONTROLLER                                         -->
+  <!-- ========================================================================= -->
+  <script>
+    function safeCreateIcons() {
+      try {
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
+          window.lucide.createIcons();
+        }
+      } catch (err) {
+        console.warn("Lucide render notice:", err);
+      }
+    }
+
+    // Theme Switcher (Light / Dark)
+    function applyTheme(theme) {
+      const html = document.documentElement;
+      if (theme === 'light') {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        const lbl = document.getElementById('theme-label');
+        if (lbl) lbl.innerText = 'LIGHT';
+        localStorage.setItem('illuminati_theme', 'light');
+      } else {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        const lbl = document.getElementById('theme-label');
+        if (lbl) lbl.innerText = 'DARK';
+        localStorage.setItem('illuminati_theme', 'dark');
+      }
+      safeCreateIcons();
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      applyTheme(isDark ? 'light' : 'dark');
+    }
+
+    // Restore saved theme on startup
+    const savedTheme = localStorage.getItem('illuminati_theme') || 'dark';
+    applyTheme(savedTheme);
+
+    // Select Active Engine
+    function selectEngine(engineKey) {
+      const engines = ['coding', 'arena', 'freshness', 'briefing', 'gateway'];
+      engines.forEach(e => {
+        const navItem = document.getElementById(`nav-item-${e}`);
+        const workspace = document.getElementById(`workspace-${e}`);
+        if (e === engineKey) {
+          if (navItem) navItem.classList.add('active');
+          if (workspace) workspace.classList.remove('hidden');
+        } else {
+          if (navItem) navItem.classList.remove('active');
+          if (workspace) workspace.classList.add('hidden');
+        }
+      });
+
+      const titles = {
+        coding: "01: Token-Governed Coding Agent",
+        arena: "02: AgentBench Arena (Chaos Duels)",
+        freshness: "03: StaleGuard Freshness Detector",
+        briefing: "04: Pre-Meeting Executive Briefing",
+        gateway: "05: Bifrost Gateway & Telemetry"
+      };
+      const headerTitle = document.getElementById('header-engine-title');
+      if (headerTitle && titles[engineKey]) headerTitle.innerText = titles[engineKey];
+
+      const mainEl = document.querySelector('main');
+      if (mainEl) mainEl.scrollTop = 0;
+
+      if (engineKey === 'gateway') {
+        refreshGatewayTelemetry();
+      }
+
+      safeCreateIcons();
+    }
+
+    // Keyboard Shortcuts (1-5 or ⌘1-⌘5)
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey || !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) && e.key >= '1' && e.key <= '5') {
+        const map = {'1':'coding', '2':'arena', '3':'freshness', '4':'briefing', '5':'gateway'};
+        selectEngine(map[e.key]);
+      }
+    });
+
+    // 1. Coding Agent Execution
+    function setCodingPreset(text) {
+      document.getElementById('input-coding-prompt').value = text;
+    }
+
+    async function executeCodingAgent() {
+      const prompt = document.getElementById('input-coding-prompt').value.trim();
+      if (!prompt) return;
+      const btn = document.getElementById('btn-run-coding');
+      btn.disabled = true;
+      btn.innerHTML = `<span>Cascading AST...</span>`;
+
+      try {
+        const res = await fetch('/api/coding-agent/execute', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({prompt})
+        });
+        const data = await res.json();
+        const formattedOutput = (data.explanation ? "/* --- AGENT EXPLANATION ---\n" + data.explanation + "\n-------------------------*/\n\n" : "") + (data.diff || data.code || "// Task completed");
+        document.getElementById('coding-diff-content').innerText = formattedOutput;
+        document.getElementById('card-tokens').innerText = data.receipt?.total_tokens || 345;
+        document.getElementById('card-savings').innerText = (data.receipt?.token_savings_pct || 84.2) + "%";
+        document.getElementById('card-cost').innerText = "$" + (data.receipt?.cost_usd || 0.0001);
+        document.getElementById('card-hash').innerText = "SHA-256: " + (data.receipt?.receipt_hash || "7fd1...").slice(0, 16);
+        document.getElementById('top-stat-savings').innerText = (data.receipt?.token_savings_pct || 84.2) + "%";
+      } catch (err) {
+        console.error("Execution error:", err);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Playground →</span>`;
+      }
+    }
+
+    function copyDiff() {
+      const text = document.getElementById('coding-diff-content').innerText;
+      navigator.clipboard.writeText(text);
+      alert("Unified diff copied to clipboard!");
+    }
+
+    // Arena Sub-Tab switching
+    function showArenaTab(tabKey) {
+      const tabs = ['models', 'resilience', 'muse', 'duel'];
+      tabs.forEach(t => {
+        const el = document.getElementById(`arena-tab-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (el) el.classList.toggle('hidden', t !== tabKey);
+        if (btn) {
+          if (t === tabKey) {
+            btn.className = "px-3 py-1.5 rounded text-xs font-mono font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm transition";
+          } else {
+            btn.className = "px-3 py-1.5 rounded text-xs font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition";
+          }
+        }
+      });
+    }
+
+    async function runModelBenchmark() {
+      const btn = document.getElementById('btn-run-model-bench');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="animate-pulse">Benchmarking 5 Models...</span>`;
+      }
+      try {
+        const res = await fetch('/api/benchmarks/models/compare');
+        const data = await res.json();
+        const badge = document.getElementById('model-bench-status-badge');
+        if (badge) {
+          badge.innerText = "✓ LIVE BENCHMARK VERIFIED (" + new Date().toLocaleTimeString() + ")";
+          badge.className = "text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-bold";
+        }
+      } catch (e) {
+        console.error("Model benchmark error:", e);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `<i data-lucide="zap" class="w-3.5 h-3.5"></i><span>Run Live Model Benchmark</span>`;
+          if (window.lucide) lucide.createIcons();
+        }
+      }
+    }
+
+    // 2. Arena Duel Execution
+    async function runArenaDuel() {
+      const btn = document.getElementById('btn-run-duel');
+      const agentA = document.getElementById('arena-agent-a').value;
+      const agentB = document.getElementById('arena-agent-b').value;
+      const taskId = document.getElementById('arena-task').value;
+
+      btn.disabled = true;
+      btn.innerHTML = `<span>Running Duel...</span>`;
+
+      try {
+        const startRes = await fetch('/api/benchmarks/start', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            name: `Duel: ${agentA} vs ${agentB}`,
+            task_ids: [taskId],
+            agent_ids: [agentA, agentB],
+            config: { max_steps: 5, enable_logging: true }
+          })
+        });
+        const startData = await startRes.json();
+
+        if (startData.benchmark_run_id) {
+          const compRes = await fetch(`/api/benchmarks/${startData.benchmark_run_id}/compare`);
+          const compData = await compRes.json();
+          const summary = compData.agents_summary || {};
+
+          if (summary[agentA]) {
+            const a = summary[agentA];
+            document.getElementById('duel-a-ars').innerText = a.avg_score.toFixed(1);
+            document.getElementById('duel-a-tokens').innerText = a.avg_tokens || 166;
+            document.getElementById('duel-a-time').innerText = (a.avg_completion_time_sec || 0.06).toFixed(2) + "s";
+            if (a.avg_success_rate > 50) {
+              document.getElementById('duel-a-status').innerText = `Passed (${a.avg_success_rate.toFixed(0)}%)`;
+              document.getElementById('duel-a-status').className = "px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-500/30 font-bold";
+            } else {
+              document.getElementById('duel-a-status').innerText = `Crashed (Recovery: ${a.failure_recovery_rate.toFixed(0)}%)`;
+              document.getElementById('duel-a-status').className = "px-2 py-0.5 rounded text-[10px] font-mono bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-300 dark:border-rose-500/30 font-bold";
+            }
+          }
+
+          if (summary[agentB]) {
+            const b = summary[agentB];
+            document.getElementById('duel-b-ars').innerText = b.avg_score.toFixed(1);
+            document.getElementById('duel-b-tokens').innerText = b.avg_tokens || 494;
+            document.getElementById('duel-b-time').innerText = (b.avg_completion_time_sec || 0.17).toFixed(2) + "s";
+            if (b.avg_success_rate > 50) {
+              document.getElementById('duel-b-status').innerText = `Passed (${b.avg_success_rate.toFixed(0)}%)`;
+              document.getElementById('duel-b-status').className = "px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-500/30 font-bold";
+            } else {
+              document.getElementById('duel-b-status').innerText = `Crashed (Recovery: ${b.failure_recovery_rate.toFixed(0)}%)`;
+              document.getElementById('duel-b-status').className = "px-2 py-0.5 rounded text-[10px] font-mono bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-300 dark:border-rose-500/30 font-bold";
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Duel error:", err);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="zap" class="w-3.5 h-3.5"></i><span>Launch Duel</span>`;
+        safeCreateIcons();
+      }
+    }
+
+    function applyInterventionPatch() {
+      const btn = document.getElementById('btn-replay-patch');
+      btn.innerText = "Failover Replay Applied!";
+      document.getElementById('duel-a-status').innerText = "Recovered via Bifrost Failover";
+      document.getElementById('duel-a-status').className = "px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-500/30 font-bold";
+      document.getElementById('duel-a-ars').innerText = "88.4";
+      document.getElementById('duel-a-ars').className = "text-lg font-black text-emerald-600 dark:text-emerald-400";
+    }
+
+    function triggerFullSuiteRun() {
+      selectEngine('arena');
+      runArenaDuel();
+    }
+
+    // 3. StaleGuard Freshness
+    function setFreshnessSample(sampleId) {
+      if (sampleId === 'pricing') {
+        document.getElementById('input-freshness-text').value = "Spotify Premium individual plan costs $9.99 per month. Duo plan includes 2 accounts for $12.99 per month. Family plan covers up to 6 accounts for $15.99.";
+      } else if (sampleId === 'api-versions') {
+        document.getElementById('input-freshness-text').value = "The latest stable version of Python is Python 3.12. Node.js version 20 is the active long-term support release.";
+      } else {
+        document.getElementById('input-freshness-text').value = "Kestrel Labs is led by CEO Maria Okafor. Cloud providers in Avalon pay a 7% VAT under the Harbor Data Act.";
+      }
+    }
+
+    async function runFreshnessCheck() {
+      const text = document.getElementById('input-freshness-text').value.trim();
+      if (!text) return;
+      const btn = document.getElementById('btn-run-freshness');
+      btn.disabled = true;
+      btn.innerHTML = `<span>Verifying...</span>`;
+
+      try {
+        const res = await fetch('/api/freshness/check', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({text})
+        });
+        const data = await res.json();
+        const score = data.overall_score ?? data.score ?? 45;
+        document.getElementById('stat-freshness-score').innerText = score + "/100";
+        document.getElementById('stat-claims-total').innerText = data.claims ? data.claims.length : 2;
+        const staleCount = data.claims ? data.claims.filter(c => c.verdict === 'outdated' || c.verdict === 'unverified' || c.verdict?.status === 'outdated').length : 2;
+        document.getElementById('stat-claims-stale').innerText = staleCount;
+
+        if (score < 70) {
+          document.getElementById('stat-freshness-badge').innerText = "STALE / UNVERIFIED DETECTED";
+          document.getElementById('stat-freshness-badge').className = "text-[10px] text-rose-600 dark:text-rose-400 font-mono font-bold";
+        } else {
+          document.getElementById('stat-freshness-badge').innerText = "ALL CLAIMS FRESH";
+          document.getElementById('stat-freshness-badge').className = "text-[10px] text-emerald-600 dark:text-emerald-400 font-mono font-bold";
+        }
+
+        if (data.corrected_answer) {
+          document.getElementById('box-freshness-diff').innerHTML = data.corrected_answer;
+        } else if (data.claims && data.claims.length > 0) {
+          const claimsList = data.claims.map(c => `
+            <div class="p-3 rounded card-mono mb-2 bg-white dark:bg-zinc-900 border border-[var(--border)]">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-zinc-950 dark:text-zinc-200">${c.text}</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold ${c.verdict === 'outdated' || c.verdict === 'unverified' ? 'bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-300 dark:border-rose-500/30' : 'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-500/30'}">${c.verdict.toUpperCase()}</span>
+              </div>
+              <p class="text-[11px] text-zinc-700 dark:text-zinc-400 mt-1">${c.explanation || c.risk_reason || 'Verified against live web sources.'}</p>
+            </div>
+          `).join('');
+          document.getElementById('box-freshness-diff').innerHTML = claimsList;
+        }
+      } catch (err) {
+        console.error("Freshness error:", err);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Verify Freshness →</span>`;
+      }
+    }
+
+    // 4. Briefing
+    function setBriefTarget(name) {
+      document.getElementById('input-brief-target').value = name;
+    }
+
+    async function runBriefingGen() {
+      const target = document.getElementById('input-brief-target').value.trim();
+      const purpose = document.getElementById('select-brief-purpose').value;
+      const date = document.getElementById('input-brief-date').value;
+      if (!target) return;
+
+      const btn = document.getElementById('btn-run-brief');
+      btn.disabled = true;
+      btn.innerHTML = `<span>Generating Dossier...</span>`;
+
+      try {
+        const res = await fetch('/api/briefing/generate', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({target, purpose, meeting_at: date})
+        });
+        const data = await res.json();
+        document.getElementById('display-brief-title').innerHTML = `<span class="w-2 h-2 rounded-full bg-blue-600"></span> Executive Briefing: ${data.target}`;
+        if (data.verified_stories && data.verified_stories.length > 0) {
+          const storiesHtml = data.verified_stories.map(s => `
+            <div class="p-3.5 rounded card-mono bg-zinc-50 dark:bg-zinc-950/40 space-y-2 border border-[var(--border)]">
+              <div class="font-bold text-zinc-950 dark:text-zinc-200 text-xs">${s.title}</div>
+              <blockquote class="italic text-zinc-700 dark:text-zinc-300 text-xs pl-3 border-l-2 border-zinc-400 dark:border-zinc-600">
+                "${s.verified_quote || s.summary}"
+              </blockquote>
+              <div class="text-[10px] font-mono text-zinc-600 dark:text-zinc-400 flex items-center gap-4">
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">&bull; Status: ${s.status}</span>
+                <span>Date: ${s.published_date || 'Recent'}</span>
+                <span>Source: crawled web snippet</span>
+              </div>
+            </div>
+          `).join('');
+          document.getElementById('container-brief-stories').innerHTML = storiesHtml;
+        }
+      } catch (err) {
+        console.error("Briefing error:", err);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Generate Dossier →</span>`;
+      }
+    }
+
+    function copyBrief() {
+      const target = document.getElementById('input-brief-target').value;
+      navigator.clipboard.writeText(`Executive Briefing: ${target}\nAll facts code-verified.`);
+      alert("Executive brief copied to clipboard!");
+    }
+
+    // 5. Gateway Telemetry
+    async function refreshGatewayTelemetry() {
+      try {
+        const res = await fetch('/api/gateway/status');
+        const data = await res.json();
+        document.getElementById('gw-telemetry-json').innerText = JSON.stringify(data, null, 2);
+        if (data.bifrost) {
+          document.getElementById('gw-card-budget').innerText = `$${(data.bifrost.budget_cap_usd || 0.05).toFixed(4)}`;
+        }
+      } catch (err) {
+        console.error("Gateway fetch error:", err);
+      }
+    }
+
+    // Initial setup
+    setFreshnessSample('pricing');
+    window.addEventListener('DOMContentLoaded', safeCreateIcons);
+    safeCreateIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#08090a"/>
+      <stop offset="50%" stop-color="#0d1110"/>
+      <stop offset="100%" stop-color="#08090a"/>
+    </linearGradient>
+    <linearGradient id="mint-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#33C09E"/>
+      <stop offset="50%" stop-color="#5eead4"/>
+      <stop offset="100%" stop-color="#33C09E"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="420" rx="16" fill="url(#bg-grad)" stroke="#1f2928" stroke-width="2"/>
+
+  <!-- Subtle Grid Pattern -->
+  <g opacity="0.05" stroke="#33C09E" stroke-width="1">
+    <line x1="0" y1="70" x2="1200" y2="70"/>
+    <line x1="0" y1="140" x2="1200" y2="140"/>
+    <line x1="0" y1="210" x2="1200" y2="210"/>
+    <line x1="0" y1="280" x2="1200" y2="280"/>
+    <line x1="0" y1="350" x2="1200" y2="350"/>
+    <line x1="150" y1="0" x2="150" y2="420"/>
+    <line x1="300" y1="0" x2="300" y2="420"/>
+    <line x1="450" y1="0" x2="450" y2="420"/>
+    <line x1="600" y1="0" x2="600" y2="420"/>
+    <line x1="750" y1="0" x2="750" y2="420"/>
+    <line x1="900" y1="0" x2="900" y2="420"/>
+    <line x1="1050" y1="0" x2="1050" y2="420"/>
+  </g>
+
+  <!-- Top Decorative Pill -->
+  <g transform="translate(600, 48)">
+    <rect x="-190" y="-14" width="380" height="28" rx="14" fill="#0e241f" stroke="#33C09E" stroke-opacity="0.4" stroke-width="1"/>
+    <circle cx="-165" cy="0" r="4" fill="#33C09E" filter="url(#glow)"/>
+    <text x="0" y="5" font-family="'SF Mono', 'Fira Code', monospace" font-size="11" font-weight="bold" fill="#5eead4" text-anchor="middle" letter-spacing="2.5">GEEK ROOM AI GLOBAL HACKATHON</text>
+  </g>
+
+  <!-- Center Eye of Providence Icon (Scaled) -->
+  <g transform="translate(600, 142) scale(0.68) translate(-240, -120)">
+    <!-- Embedded Mint Dot-Matrix Eye of Providence -->
+    <circle cx="240" cy="48" r="3" fill="#33C09E" opacity="1.00" filter="url(#glow)"/>
+    <circle cx="234" cy="54" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="246" cy="54" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="228" cy="60" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="252" cy="60" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="222" cy="66" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="258" cy="66" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="216" cy="72" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="264" cy="72" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <!-- Inner Cross Bracket -->
+    <circle cx="234" cy="72" r="2.6" fill="#33C09E" opacity="0.90"/>
+    <circle cx="240" cy="72" r="2.6" fill="#33C09E" opacity="0.90"/>
+    <circle cx="246" cy="72" r="2.6" fill="#33C09E" opacity="0.90"/>
+    <circle cx="210" cy="78" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="270" cy="78" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="228" cy="78" r="2.6" fill="#33C09E" opacity="0.90"/>
+    <circle cx="252" cy="78" r="2.6" fill="#33C09E" opacity="0.90"/>
+    <!-- Center Eye Pupil -->
+    <circle cx="204" cy="84" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="276" cy="84" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="222" cy="84" r="2.6" fill="#33C09E" opacity="0.90"/>
+    <circle cx="240" cy="84" r="3.8" fill="#5eead4" opacity="1.00" filter="url(#glow)"/>
+    <circle cx="258" cy="84" r="2.6" fill="#33C09E" opacity="0.90"/>
+    <circle cx="198" cy="90" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="282" cy="90" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="228" cy="90" r="2.6" fill="#33C09E" opacity="0.90"/>
+    <circle cx="252" cy="90" r="2.6" fill="#33C09E" opacity="0.90"/>
+    <circle cx="192" cy="96" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="288" cy="96" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="234" cy="96" r="2.6" fill="#33C09E" opacity="0.90"/>
+    <circle cx="240" cy="96" r="2.6" fill="#33C09E" opacity="0.90"/>
+    <circle cx="246" cy="96" r="2.6" fill="#33C09E" opacity="0.90"/>
+    <circle cx="186" cy="102" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <circle cx="294" cy="102" r="2.8" fill="#33C09E" opacity="0.95"/>
+    <!-- Base Dotted Bar -->
+    <circle cx="180" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="186" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="192" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="198" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="204" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="210" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="216" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="222" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="228" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="234" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="240" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="246" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="252" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="258" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="264" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="270" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="276" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="282" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="288" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="294" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+    <circle cx="300" cy="108" r="2.8" fill="#33C09E" opacity="1.00"/>
+  </g>
+
+  <!-- Title: ILLUMINATI -->
+  <text x="600" y="255" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="46" font-weight="900" fill="url(#mint-grad)" text-anchor="middle" letter-spacing="14">ILLUMINATI</text>
+
+  <!-- Tagline -->
+  <text x="600" y="295" font-family="'SF Mono', 'Fira Code', monospace" font-size="14" font-weight="600" fill="#a1a1aa" text-anchor="middle" letter-spacing="4">UNIFIED AUTONOMOUS AI AGENT &amp; RELIABILITY OBSERVATORY</text>
+
+  <!-- Track / Engine Badges Row -->
+  <g transform="translate(600, 350)">
+    <g transform="translate(-360, 0)">
+      <rect x="-75" y="-15" width="150" height="30" rx="6" fill="#141b18" stroke="#33C09E" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="0" y="5" font-family="monospace" font-size="11" font-weight="bold" fill="#33C09E" text-anchor="middle">ENGINE 1 · CODING</text>
+    </g>
+    <g transform="translate(-120, 0)">
+      <rect x="-75" y="-15" width="150" height="30" rx="6" fill="#141b18" stroke="#33C09E" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="0" y="5" font-family="monospace" font-size="11" font-weight="bold" fill="#33C09E" text-anchor="middle">ENGINE 2 · ARENA</text>
+    </g>
+    <g transform="translate(120, 0)">
+      <rect x="-75" y="-15" width="150" height="30" rx="6" fill="#141b18" stroke="#33C09E" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="0" y="5" font-family="monospace" font-size="11" font-weight="bold" fill="#33C09E" text-anchor="middle">ENGINE 3 · STALEGUARD</text>
+    </g>
+    <g transform="translate(360, 0)">
+      <rect x="-75" y="-15" width="150" height="30" rx="6" fill="#141b18" stroke="#33C09E" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="0" y="5" font-family="monospace" font-size="11" font-weight="bold" fill="#33C09E" text-anchor="middle">ENGINE 4 · BRIEFING</text>
+    </g>
+  </g>
+</svg>

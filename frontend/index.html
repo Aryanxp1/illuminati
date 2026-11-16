@@ -1532,6 +1532,19 @@ Loading live gateway telemetry...
     setFreshnessSample('pricing');
     window.addEventListener('DOMContentLoaded', safeCreateIcons);
     safeCreateIcons();
+
+    // URL parameter routing for direct tab deep-linking and screenshotting
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const urlEngine = params.get('engine');
+      if (urlEngine && typeof selectEngine === 'function') {
+        selectEngine(urlEngine);
+      }
+      const urlTab = params.get('tab');
+      if (urlTab && typeof showArenaTab === 'function') {
+        showArenaTab(urlTab);
+      }
+    } catch (e) {}
   </script>
 </body>
 </html>

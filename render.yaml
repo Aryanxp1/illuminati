@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: illuminati
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    healthCheckPath: /api/gateway/status
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: HOST
+        value: 0.0.0.0
+      - key: BIFROST_OFFLINE_MODE
+        value: "true"
+      - key: TAVILY_MOCK_MODE
+        value: "true"

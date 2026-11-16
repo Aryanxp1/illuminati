@@ -68,7 +68,10 @@ BANNER = r"""
 ======================================================================
 """
 
-def run_server(host: str = "127.0.0.1", port: int = 8000, reload: bool = False):
+def run_server(host: str = None, port: int = None, reload: bool = False):
+    host = host or os.getenv("HOST", "0.0.0.0")
+    if port is None:
+        port = int(os.getenv("PORT", 8000))
     import uvicorn
     print(BANNER)
     print(f" 🚀 Web Observatory Dashboard: http://{host}:{port}")
@@ -129,8 +132,8 @@ def main():
 
     parser = argparse.ArgumentParser(description="Illuminati: Unified Autonomous AI Agent & Reliability Observatory")
     parser.add_argument("--serve", action="store_true", help="Start the unified web server and dashboard (default)")
-    parser.add_argument("--host", type=str, default="127.0.0.1", help="Server host (default: 127.0.0.1)")
-    parser.add_argument("--port", type=int, default=8000, help="Server port (default: 8000)")
+    parser.add_argument("--host", type=str, default=os.getenv("HOST", "0.0.0.0"), help="Server host (default: 0.0.0.0)")
+    parser.add_argument("--port", type=int, default=int(os.getenv("PORT", 8000)), help="Server port (default: 8000 or $PORT)")
     parser.add_argument("--reload", action="store_true", default=False, help="Enable auto-reload")
     
     # CLI commands for individual Problem Statements

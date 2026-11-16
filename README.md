@@ -13,6 +13,7 @@
   <img alt="Terminal" src="https://img.shields.io/badge/CLI-Rich%20%C2%B7%20Prompt--Toolkit-33C09E?style=flat-square">
   <img alt="Bifrost Gateway" src="https://img.shields.io/badge/gateway-Bifrost%20by%20Maxim%20AI-126852?style=flat-square">
   <img alt="Tavily Knowledge Plane" src="https://img.shields.io/badge/retrieval-Tavily%20by%20Nebius-126852?style=flat-square">
+  <a href="https://illuminati-u2kk.onrender.com/"><img alt="Live Demo" src="https://img.shields.io/badge/live%20demo-onrender.com-33C09E?style=flat-square&logo=render&logoColor=white"></a>
   <img alt="License" src="https://img.shields.io/badge/license-MIT-blue?style=flat-square">
 </p>
 
@@ -32,6 +33,12 @@
 Autonomous AI agents burn expensive frontier tokens on ungrounded steps and ask you to trust the output blindly. **Illuminati does the opposite.**
 
 Built for the **Geek Room AI Global Hackathon (November 2026)**, **Illuminati** is a unified autonomous AI agent platform and reliability observatory spanning all 4 hackathon tracks. It governs token economics with a strict 3-phase cascade, subjects agents to 12 adversarial chaos fault injections, calculates mathematical reliability with the **Agent Reliability Score (ARS)**, grounds claims against real-time web evidence with **Tavily**, and cryptographically signs every execution turn with **SHA-256 turn receipts**.
+
+<p align="center">
+  <a href="https://illuminati-u2kk.onrender.com/">
+    <img src="https://img.shields.io/badge/%F0%9F%8C%90%20LIVE%20DEPLOYMENT-illuminati--u2kk.onrender.com-33C09E?style=for-the-badge&logo=render&logoColor=white" alt="Live Deployment on Render">
+  </a>
+</p>
 
 <p align="center">
   <picture>
@@ -117,6 +124,9 @@ Four verified empirical results from live runs, reproducible locally with zero p
 ---
 
 ## 🚀 Quick start
+
+> 🌐 **Live Cloud Deployment:** Test the platform right now in your browser without installing anything locally:  
+> 👉 [**https://illuminati-u2kk.onrender.com/**](https://illuminati-u2kk.onrender.com/)
 
 ### 1. Instant Windows Launchers (1-Click)
 
@@ -367,7 +377,7 @@ illuminati/
         <li><b>Engine 4 (Pre-Meeting Briefing Agent):</b> 30-day temporal research window, deterministic verbatim quote verification, and leadership transition tracking.</li>
         <li><b>Unified CLI &amp; Web Platform:</b> Interactive Rich terminal REPL with centered dot-matrix LED Eye of Providence, slash auto-completer, and modern dark glassmorphic web dashboard.</li>
       </ul>
-      <b>GitHub:</b> <a href="https://github.com/Aryanxp1/illuminati">https://github.com/Aryanxp1/illuminati</a> &nbsp;•&nbsp; <b>Email:</b> <a href="mailto:vishwakarmaaryan606@gmail.com">vishwakarmaaryan606@gmail.com</a>
+      <b>Live Demo:</b> <a href="https://illuminati-u2kk.onrender.com/">https://illuminati-u2kk.onrender.com/</a> &nbsp;•&nbsp; <b>GitHub:</b> <a href="https://github.com/Aryanxp1/illuminati">https://github.com/Aryanxp1/illuminati</a> &nbsp;•&nbsp; <b>Email:</b> <a href="mailto:vishwakarmaaryan606@gmail.com">vishwakarmaaryan606@gmail.com</a>
     </td>
   </tr>
 </table>

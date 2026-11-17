@@ -16,6 +16,8 @@
 
     :root {
       --bg: #090a0d;
+      --header-bg: #0d0f15;
+      --header-border: #1e222d;
       --card-bg: #111318;
       --border: #222631;
       --text: #f3f4f6;
@@ -28,6 +30,8 @@
 
     html.light, body.light, .light {
       --bg: #f8fafc;
+      --header-bg: #e2e6eb;
+      --header-border: #cbd5e1;
       --card-bg: #ffffff;
       --border: #cbd5e1;
       --text: #09090b;
@@ -187,7 +191,7 @@
   <!-- ========================================================================= -->
   <!-- TOP STATUS BAR                                                            -->
   <!-- ========================================================================= -->
-  <header class="h-12 border-b border-[var(--border)] px-4 flex items-center justify-between shrink-0 bg-[var(--bg)] z-20">
+  <header class="h-12 border-b border-[var(--header-border)] px-4 flex items-center justify-between shrink-0 bg-[var(--header-bg)] z-20 transition-colors">
     <div class="flex items-center gap-3">
       <!-- Minimalist Eye of Providence Logo & Breadcrumb -->
       <div class="flex items-center gap-2">
@@ -205,42 +209,55 @@
     </div>
 
     <!-- Right Controls: Telemetry, Theme Toggle, GitHub Link -->
-    <div class="flex items-center gap-3 text-xs font-mono">
-      <div class="hidden md:flex items-center gap-2 px-2.5 py-1 rounded border border-[var(--border)] bg-[var(--card-bg)] text-zinc-700 dark:text-zinc-400">
-        <span class="text-zinc-500 dark:text-zinc-500">MODEL:</span>
-        <span class="text-zinc-900 dark:text-white font-semibold">openai/gpt-4o-mini</span>
-        <span class="text-zinc-400 dark:text-zinc-600">→</span>
-        <span class="text-zinc-700 dark:text-zinc-400 font-medium">claude-3-5-haiku</span>
+    <div class="flex items-center gap-2 sm:gap-3 text-xs font-mono">
+      <!-- Compact Model Selector Dropdown -->
+      <div class="flex items-center gap-1.5 px-2 py-1 rounded border border-[var(--border)] bg-[var(--card-bg)] text-xs font-mono shadow-sm">
+        <span class="text-zinc-500 dark:text-zinc-400 text-[10px] font-bold">MODEL</span>
+        <select id="global-model-selector" onchange="onModelChange(this.value)" class="bg-transparent font-semibold text-zinc-900 dark:text-zinc-100 cursor-pointer focus:outline-none text-xs pr-1">
+          <option value="openai/gpt-4o-mini" class="bg-[var(--card-bg)] text-zinc-900 dark:text-zinc-100">gpt-4o-mini (Governed)</option>
+          <option value="anthropic/claude-3-5-haiku" class="bg-[var(--card-bg)] text-zinc-900 dark:text-zinc-100">claude-3-5-haiku (Cascade)</option>
+          <option value="deepseek/deepseek-chat" class="bg-[var(--card-bg)] text-zinc-900 dark:text-zinc-100">deepseek-chat (Alternative)</option>
+          <option value="groq/llama-3-8b" class="bg-[var(--card-bg)] text-zinc-900 dark:text-zinc-100">llama-3-8b (Fast)</option>
+        </select>
       </div>
 
-      <div class="flex items-center gap-2 px-2 py-1 rounded border border-[var(--border)] bg-[var(--card-bg)]">
+      <!-- Savings Telemetry Badge -->
+      <div class="flex items-center gap-2 px-2 py-1 rounded border border-[var(--border)] bg-[var(--card-bg)] shadow-sm">
         <span class="text-zinc-500 dark:text-zinc-400 text-[10px] font-bold">SAVINGS</span>
         <span id="top-stat-savings" class="text-emerald-600 dark:text-emerald-400 font-bold">84.2%</span>
       </div>
 
-      <!-- Cloud Terminal Link -->
-      <a href="/terminal" class="btn-mono-ghost px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-sans font-semibold text-emerald-400 border-emerald-600/40 hover:bg-emerald-950/40 hover:text-white" title="Launch Interactive Cloud CLI Terminal">
-        <i data-lucide="terminal" class="w-3.5 h-3.5 text-[#33C09E]"></i>
+      <!-- Cloud Terminal Link (Highlighted) -->
+      <a href="/terminal" class="px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-sans font-bold bg-[#33C09E] text-zinc-950 hover:bg-[#2cb191] dark:bg-emerald-500/20 dark:text-emerald-300 dark:border dark:border-emerald-500/60 dark:hover:bg-emerald-500 dark:hover:text-black shadow-sm transition-all hover:scale-[1.02]" title="Launch Interactive Cloud CLI Terminal (/terminal)">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="4 17 10 11 4 5"></polyline>
+          <line x1="12" y1="19" x2="20" y2="19"></line>
+        </svg>
         <span class="hidden sm:inline">CLI Terminal</span>
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-zinc-900 dark:bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-zinc-900 dark:bg-emerald-400"></span>
+        </span>
       </a>
 
       <!-- Documentation Link -->
-      <a href="/overview" class="btn-mono-ghost px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-sans font-semibold text-zinc-800 dark:text-zinc-200 hover:text-white" title="Illuminati Documentation">
+      <a href="/overview" class="btn-mono-ghost px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-sans font-semibold text-zinc-800 dark:text-zinc-200 hover:text-white shadow-sm" title="Illuminati Documentation">
         <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
         <span class="hidden sm:inline">Docs</span>
       </a>
 
       <!-- Theme Switcher -->
-      <button onclick="toggleTheme()" class="btn-mono-ghost px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-semibold text-zinc-800 dark:text-zinc-200" title="Toggle Light/Dark Theme">
+      <button onclick="toggleTheme()" class="btn-mono-ghost px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-semibold text-zinc-800 dark:text-zinc-200 shadow-sm" title="Toggle Light/Dark Theme">
         <i data-lucide="sun" class="w-3.5 h-3.5"></i>
         <span id="theme-label" class="hidden sm:inline">DARK</span>
       </button>
 
-      <!-- GitHub Author Profile Link -->
-      <a href="https://github.com/Aryanxp1/illuminati" target="_blank" class="btn-mono-ghost px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-sans font-semibold text-zinc-800 dark:text-zinc-200">
-        <i data-lucide="github" class="w-3.5 h-3.5"></i>
-        <span class="hidden sm:inline">Aryanxp1</span>
+      <!-- GitHub Author Profile Link with Official Octocat SVG Logo -->
+      <a href="https://github.com/Aryanxp1/illuminati" target="_blank" class="btn-mono-ghost px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-sans font-semibold text-zinc-800 dark:text-zinc-200 hover:text-white shadow-sm" title="GitHub Repository & Author: Aryanxp1">
+        <svg class="w-3.5 h-3.5 fill-current text-zinc-800 dark:text-zinc-200 shrink-0" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+        </svg>
+        <span class="hidden sm:inline font-mono">Aryanxp1</span>
       </a>
     </div>
   </header>
@@ -1535,6 +1552,10 @@ Loading live gateway telemetry...
       } catch (err) {
         console.error("Gateway fetch error:", err);
       }
+    }
+
+    function onModelChange(val) {
+      console.log("Model switched to:", val);
     }
 
     // Initial setup

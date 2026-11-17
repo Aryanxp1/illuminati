@@ -19,6 +19,7 @@
 
 <p align="center">
   <a href="#-the-results">Results</a> ·
+  <a href="#-live-browser-cli-terminal">Live Terminal</a> ·
   <a href="#-see-it">See it</a> ·
   <a href="#-quick-start">Quick start</a> ·
   <a href="#-the-4-autonomous-engines">The 4 Engines</a> ·
@@ -37,6 +38,10 @@ Built for the **Geek Room AI Global Hackathon (November 2026)**, **Illuminati** 
 <p align="center">
   <a href="https://illuminati-u2kk.onrender.com/">
     <img src="https://img.shields.io/badge/%F0%9F%8C%90%20LIVE%20DEPLOYMENT-illuminati--u2kk.onrender.com-33C09E?style=for-the-badge&logo=render&logoColor=white" alt="Live Deployment on Render">
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://illuminati-u2kk.onrender.com/terminal">
+    <img src="https://img.shields.io/badge/%F0%9F%96%A5%EF%B8%8F%20LIVE%20WEB%20CLI%20TERMINAL-%2Fterminal-10b981?style=for-the-badge&logo=gnometerminal&logoColor=white" alt="Live Web CLI Terminal">
   </a>
 </p>
 
@@ -70,6 +75,40 @@ Four verified empirical results from live runs, reproducible locally with zero p
 | **anthropic/claude-3-5-haiku** (Cascade Tier) | Bifrost Failover | **210ms** | **1,240 tokens** | **92.1 / 100** | <span style="color:#33C09E">**PASSED (< \$0.02)**</span> |
 | **deepseek/deepseek-chat** (Alternative) | OpenRouter Bridge | **380ms** | **2,450 tokens** | **86.4 / 100** | <span style="color:#33C09E">**PASSED (< \$0.03)**</span> |
 | **Un-governed Frontier Baseline** | Direct API | **1,850ms** | **17,438 tokens** | **41.2 / 100** | <span style="color:#ef4444">**BREACHED (> \$0.40)**</span> |
+
+---
+
+## 🖥️ Live Browser CLI Terminal (`/terminal`)
+
+Illuminati features a **real, bidirectional pseudo-terminal (PTY) bridge** embedded into the browser at [**https://illuminati-u2kk.onrender.com/terminal**](https://illuminati-u2kk.onrender.com/terminal). Unlike simulated web consoles, this connects through WebSocket to a live Python sub-process running Illuminati's authentic interactive REPL (`backend/modules/coding_agent/cli_ui.py`).
+
+```text
+┌────────────────────────────────────────────────────────┐
+│             Frontend: xterm.js Canvas                  │
+│       Fit Addon · Web Links · Custom Mint Theme        │
+└──────────────────────────▲─────────────────────────────┘
+                           │ WebSocket (/ws/terminal)
+┌──────────────────────────▼─────────────────────────────┐
+│          FastAPI Async WebSocket Bridge                │
+│    Rate Limiting · Secret Scrubber · Concurrency Cap   │
+└──────────────────────────▲─────────────────────────────┘
+                           │ PTY (POSIX openpty / Win32 ConPTY)
+┌──────────────────────────▼─────────────────────────────┐
+│          Real Python Process (`main.py chat`)          │
+│    Rich ANSI · prompt_toolkit · Slash Completer        │
+└────────────────────────────────────────────────────────┘
+```
+
+### ⚡ Terminal Features & Capabilities
+- **True Interactive Experience:** Full 24-bit TrueColor Rich output, dot-matrix Eye of Providence banner, live `/` slash-command autocompletion popup, command history navigation (↑/↓), Ctrl+C interrupt trapping, and window resize synchronization.
+- **Unified Command Execution:** Run `/bench` (full 12 chaos suites & model matrix), `/audit` (freshness audit), `/run` (token-governed coding agent cascade), `/check` (StaleGuard drift verification), `/brief` (30-day pre-meeting intelligence dossier), `/budget`, `/models`, `/receipt`, and `/status`.
+- **Quick Action Chips:** 1-click execution chips above the terminal canvas for rapid testing across all 4 problem statements.
+
+### 🛡️ Production Security & Sandboxing
+- **Locked Command Allowlist:** The PTY process group exclusively executes `[python, "-u", "main.py", "chat"]`. Visitors cannot escape into raw system shells (`bash`, `sh`, `cmd.exe`, or `powershell.exe`).
+- **Real-Time Secret Masking:** An inline output scrubber intercepts outgoing PTY byte streams, automatically redacting sensitive tokens (`sk-***[REDACTED]***`, `tvly-***[REDACTED]***`, `bf-***[REDACTED]***`, and Bearer headers).
+- **Session Quota & Protection:** Limits active concurrent terminal sessions (max 5) to protect container memory and CPU, enforces a 5-minute idle timeout, and bounds maximum session lifetime to 15 minutes.
+- **Cross-Platform Compatibility:** Supports Linux POSIX `openpty` (Render deployment) and Windows `winpty` ConPTY (local development).
 
 ---
 

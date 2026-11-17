@@ -50,11 +50,13 @@ GATEWAY_TAG = "[bold cyan]Bifrost × OpenRouter[/bold cyan]" if LIVE_MODE else "
 # ── Slash commands registry ───────────────────────────────────────────────────
 SLASH_COMMANDS = [
     ("/code",            "⚡ Run token-governed coding agent on a task   [PS 01]"),
+    ("/run",             "⚡ Execute coding agent on prompt or task       [PS 01]"),
     ("/bench",           "⚔  Full Model Benchmark & 12 Chaos Suites      [PS 02]"),
     ("/bench compare",   "📊 Model Comparison: Latency, Tokens & Quality [PS 02]"),
     ("/bench chaos",     "💥 Run 12 Injected Fault Resilience Suites      [PS 02]"),
     ("/bench code",      "🏆 Code Quality in Fewest Tokens Leaderboard   [PS 01]"),
     ("/check",           "🛡  Verify text freshness & factual drift       [PS 03]"),
+    ("/audit",           "🛡  Audit text, claims, or code freshness       [PS 03]"),
     ("/brief",           "📋 Generate 30-day pre-meeting intelligence     [PS 04]"),
     ("/budget",          "💰 Inspect token budget, cost cap & USD spend"),
     ("/models",          "🔗 View Bifrost model plane & failover chain"),
@@ -271,8 +273,10 @@ def render_help():
 
     rows = [
         ("/code <task>",   "[bold green]⚡[/bold green] Generate token-governed code patch via Bifrost",   "/code Add LRU cache to fibonacci"),
+        ("/run <task>",    "[bold green]⚡[/bold green] Alias for /code to run coding agent",              "/run Implement binary search"),
         ("/bench",         "[bold yellow]⚔[/bold yellow]  Run 12 chaos failure-injection benchmark suites",  "/bench"),
         ("/check <text>",  "[bold cyan]🛡[/bold cyan]  StaleGuard real-time factual verification",         "/check North Korea is democratic"),
+        ("/audit <text>",  "[bold cyan]🛡[/bold cyan]  Audit claims/code freshness & factual drift",       "/audit Python 3.12 release date"),
         ("/brief <name>",  "[bold magenta]📋[/bold magenta] 30-day pre-meeting executive intelligence brief","/brief Anthropic"),
         ("/budget",        "[bold green]💰[/bold green] Show token balance & USD cost governance",          "/budget"),
         ("/models",        "[bold cyan]🔗[/bold cyan] Inspect Bifrost gateway routing tiers",              "/models"),
@@ -1069,13 +1073,14 @@ async def run_interactive_repl():
                     ))
                 continue
 
-            # ── /code ─────────────────────────────────────────────────────────
-            if cmd_lower.startswith("/code"):
-                task_prompt = user_input[5:].strip().strip("'").strip('"')
+            # ── /code /run ────────────────────────────────────────────────────
+            if cmd_lower.startswith("/code") or cmd_lower.startswith("/run"):
+                offset = 4 if cmd_lower.startswith("/run") else 5
+                task_prompt = user_input[offset:].strip().strip("'").strip('"')
                 if not task_prompt:
                     console.print(Panel(
-                        "[yellow]Usage: [bold white]/code <your coding task>[/bold white]\n"
-                        "[dim]Example: /code Implement a thread-safe LRU cache in Python[/dim][/yellow]",
+                        "[yellow]Usage: [bold white]/code <task>[/bold white] or [bold white]/run <task>[/bold white]\n"
+                        "[dim]Example: /run Implement a thread-safe LRU cache in Python[/dim][/yellow]",
                         box=box.ROUNDED, border_style="yellow", padding=(0, 2),
                     ))
                     continue
@@ -1088,9 +1093,10 @@ async def run_interactive_repl():
                 await execute_benchmark(sub)
                 continue
 
-            # ── /check ────────────────────────────────────────────────────────
-            if cmd_lower.startswith("/check"):
-                text = user_input[6:].strip().strip("'").strip('"')
+            # ── /check /audit ─────────────────────────────────────────────────
+            if cmd_lower.startswith("/check") or cmd_lower.startswith("/audit"):
+                offset = 6 if cmd_lower.startswith("/audit") else 6
+                text = user_input[offset:].strip().strip("'").strip('"')
                 await execute_staleguard_check(text)
                 continue
 

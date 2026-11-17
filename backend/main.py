@@ -1,5 +1,9 @@
 import os
 import sys
+import time
+import uuid
+import json
+import asyncio
 import types
 from pathlib import Path
 from contextlib import asynccontextmanager
@@ -23,7 +27,7 @@ ARENA_DIR = ROOT_DIR / "backend" / "modules" / "arena"
 if str(ARENA_DIR) not in sys.path:
     sys.path.insert(0, str(ARENA_DIR))
 
-from fastapi import FastAPI, Depends, Request
+from fastapi import FastAPI, Depends, Request, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse
@@ -33,6 +37,12 @@ from .config import settings
 from .database import engine, Base, SessionLocal, init_db, get_db
 from .gateway.bifrost import bifrost
 from .gateway.tavily_client import tavily
+from .terminal_bridge import (
+    terminal_manager,
+    sanitize_output,
+    IDLE_TIMEOUT_SECONDS,
+    MAX_SESSION_DURATION_SECONDS
+)
 
 # Import module routers
 from .modules.coding_agent.router import router as coding_router
@@ -97,7 +107,11 @@ async def lifespan(app: FastAPI):
     finally:
         db.close()
     
-    yield
+    try:
+        yield
+    finally:
+        # Graceful cleanup of all active PTY terminal sessions
+        terminal_manager.close_all()
 
 app = FastAPI(
     title="Illuminati — Unified AI Agent & Reliability Observatory Platform",
@@ -184,6 +198,133 @@ def serve_documentation():
     if docs_file.exists():
         return FileResponse(docs_file)
     return {"message": "Documentation page not found at frontend/docs.html"}
+
+@app.get("/terminal")
+def serve_terminal():
+    terminal_file = FRONTEND_DIR / "terminal.html"
+    if terminal_file.exists():
+        return FileResponse(terminal_file)
+    return {"message": "Terminal UI not found at frontend/terminal.html"}
+
+@app.get("/api/terminal/stats")
+def terminal_stats():
+    return {
+        "active_sessions": terminal_manager.active_count(),
+        "max_sessions": terminal_manager.max_sessions,
+        "idle_timeout_seconds": IDLE_TIMEOUT_SECONDS,
+        "max_duration_seconds": MAX_SESSION_DURATION_SECONDS
+    }
+
+@app.websocket("/ws/terminal")
+async def websocket_terminal(websocket: WebSocket):
+    await websocket.accept()
+    session_id = str(uuid.uuid4())
+
+    cols = 100
+    rows = 30
+    try:
+        cols_q = websocket.query_params.get("cols")
+        rows_q = websocket.query_params.get("rows")
+        if cols_q:
+            cols = max(20, min(int(cols_q), 300))
+        if rows_q:
+            rows = max(10, min(int(rows_q), 100))
+    except Exception:
+        pass
+
+    try:
+        pty_session = await terminal_manager.create_session(session_id, cols=cols, rows=rows)
+    except Exception as exc:
+        err_msg = (
+            "\r\n\x1b[1;31m[!] Illuminati Cloud Terminal Notice\x1b[0m\r\n"
+            f"\x1b[33m{str(exc)}\x1b[0m\r\n\r\n"
+        )
+        await websocket.send_text(err_msg)
+        await asyncio.sleep(0.5)
+        await websocket.close(code=1008)
+        return
+
+    async def pty_to_ws():
+        try:
+            while pty_session.is_alive():
+                chunk = await pty_session.read()
+                if chunk:
+                    clean_chunk = sanitize_output(chunk)
+                    await websocket.send_text(clean_chunk)
+                else:
+                    await asyncio.sleep(0.015)
+        except (WebSocketDisconnect, asyncio.CancelledError):
+            pass
+        except Exception:
+            pass
+
+    async def ws_to_pty():
+        try:
+            while pty_session.is_alive():
+                msg = await websocket.receive_text()
+                if not msg:
+                    continue
+                if msg.startswith("{") and msg.endswith("}"):
+                    try:
+                        data = json.loads(msg)
+                        msg_type = data.get("type")
+                        if msg_type == "resize":
+                            new_cols = data.get("cols", cols)
+                            new_rows = data.get("rows", rows)
+                            pty_session.resize(new_cols, new_rows)
+                            continue
+                        elif msg_type == "ping":
+                            pong_resp = {"type": "pong", "time": time.time()}
+                            if "client_time" in data:
+                                pong_resp["client_time"] = data["client_time"]
+                            await websocket.send_text(json.dumps(pong_resp))
+                            continue
+                        elif msg_type == "input":
+                            raw_in = data.get("data", "")
+                            await pty_session.write(raw_in)
+                            continue
+                    except json.JSONDecodeError:
+                        pass
+                await pty_session.write(msg)
+        except (WebSocketDisconnect, asyncio.CancelledError):
+            pass
+        except Exception:
+            pass
+
+    async def session_watchdog():
+        try:
+            while pty_session.is_alive():
+                await asyncio.sleep(2.0)
+                now = time.time()
+                if (now - pty_session.last_active_at) > IDLE_TIMEOUT_SECONDS:
+                    await websocket.send_text(
+                        "\r\n\x1b[1;33m[Session timed out due to 5 minutes of inactivity. Disconnected.]\x1b[0m\r\n"
+                    )
+                    break
+                if (now - pty_session.created_at) > MAX_SESSION_DURATION_SECONDS:
+                    await websocket.send_text(
+                        "\r\n\x1b[1;33m[Session reached maximum time limit (15m). Disconnected.]\x1b[0m\r\n"
+                    )
+                    break
+        except (WebSocketDisconnect, asyncio.CancelledError):
+            pass
+
+    t_pty = asyncio.create_task(pty_to_ws())
+    t_ws = asyncio.create_task(ws_to_pty())
+    t_wd = asyncio.create_task(session_watchdog())
+
+    done, pending = await asyncio.wait(
+        [t_pty, t_ws, t_wd],
+        return_when=asyncio.FIRST_COMPLETED
+    )
+    for p in pending:
+        p.cancel()
+
+    await terminal_manager.remove_session(session_id)
+    try:
+        await websocket.close()
+    except Exception:
+        pass
 
 if FRONTEND_DIR.exists():
     app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="frontend_static")

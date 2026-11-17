@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Illuminati — Cloud CLI Terminal</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2333C09E' stroke-width='2'><polygon points='12 2 22 20 2 20'/><circle cx='12' cy='13.5' r='1.5' fill='%2333C09E'/></svg>">
+  
+  <!-- Tailwind CSS & Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- xterm.js & Addons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css" />
+  <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xterm-addon-web-links@0.9.0/lib/xterm-addon-web-links.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+    :root {
+      --bg: #090a0d;
+      --card-bg: #111318;
+      --border: #222631;
+      --border-bright: #33C09E;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --mint: #33C09E;
+      --mint-glow: rgba(51, 192, 158, 0.25);
+      --mono: 'JetBrains Mono', Menlo, Monaco, Consolas, monospace;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background-color: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mono { font-family: var(--mono); }
+
+    /* Dot grid background pattern */
+    .dot-grid-bg {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    /* Terminal container styling */
+    #terminal-container {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      padding: 12px 16px;
+      box-sizing: border-box;
+      background: #090a0d;
+      position: relative;
+    }
+
+    .xterm {
+      height: 100%;
+      font-feature-settings: "liga" 0;
+    }
+
+    .xterm-viewport {
+      overflow-y: auto !important;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+
+    /* Pill buttons */
+    .btn-pill {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      transition: all 0.15s ease;
+    }
+    .btn-pill:hover {
+      background-color: rgba(51, 192, 158, 0.12);
+      border-color: var(--mint);
+      color: #ffffff;
+      transform: translateY(-0.5px);
+    }
+
+    /* Command chips */
+    .cmd-chip {
+      background: #141720;
+      border: 1px solid #272b38;
+      color: #cbd5e1;
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .cmd-chip:hover {
+      border-color: #33C09E;
+      background: #172422;
+      color: #33C09E;
+    }
+  </style>
+</head>
+<body class="dot-grid-bg flex flex-col h-screen select-none">
+
+  <!-- ========================================================================= -->
+  <!-- TOP HEADER / NAV BAR                                                      -->
+  <!-- ========================================================================= -->
+  <header class="h-13 border-b border-[var(--border)] px-4 py-2 flex items-center justify-between shrink-0 bg-[#0c0e14] z-20">
+    <div class="flex items-center gap-3">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2.5 group" title="Return to Main Dashboard">
+        <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700/60 flex items-center justify-center text-white shadow-md group-hover:border-[#33C09E] transition-colors">
+          <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#33C09E]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 22 20 2 20" />
+            <path d="M7 13.5s2.5-3 5-3 5 3 5 3-2.5 3-5 3-5-3-5-3z" />
+            <circle cx="12" cy="13.5" r="1.3" fill="currentColor" />
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-bold text-sm tracking-tight text-white flex items-center gap-1.5">
+            ILLUMINATI
+            <span class="text-[10px] font-mono font-medium px-1.5 py-0.2 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-600/40">PTY CLI</span>
+          </span>
+          <span class="text-[10px] font-mono text-zinc-400">Eye of Providence · Real Python Session</span>
+        </div>
+      </a>
+      <span class="text-zinc-600 font-mono text-xs hidden sm:inline">/</span>
+      <span class="text-xs font-mono text-zinc-400 hidden sm:inline">browser terminal</span>
+    </div>
+
+    <!-- Status Badge, Latency & Controls -->
+    <div class="flex items-center gap-2.5 text-xs font-mono">
+      <!-- Live Status Badge -->
+      <div id="status-badge" class="flex items-center gap-2 px-2.5 py-1 rounded border border-yellow-700/50 bg-yellow-950/40 text-yellow-400">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-400"></span>
+        </span>
+        <span id="status-text" class="font-bold tracking-wider text-[11px]">CONNECTING</span>
+      </div>
+
+      <!-- Ping latency -->
+      <div class="hidden md:flex items-center gap-1.5 px-2 py-1 rounded border border-[var(--border)] bg-[#12141c] text-zinc-400 text-[11px]">
+        <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400"></i>
+        <span>RTT:</span>
+        <span id="latency-val" class="font-bold text-zinc-200">-- ms</span>
+      </div>
+
+      <!-- Action Buttons -->
+      <button onclick="reconnectTerminal()" class="btn-pill px-2.5 py-1 rounded text-xs flex items-center gap-1.5 hover:text-white" title="Restart terminal connection">
+        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">Reconnect</span>
+      </button>
+
+      <button onclick="clearTerminalScreen()" class="btn-pill px-2.5 py-1 rounded text-xs flex items-center gap-1.5 hover:text-white" title="Clear terminal screen">
+        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">Clear</span>
+      </button>
+
+      <a href="/" class="btn-pill px-2.5 py-1 rounded text-xs flex items-center gap-1.5 hover:text-white" title="Dashboard">
+        <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">Dashboard</span>
+      </a>
+
+      <a href="/docs.html" class="btn-pill px-2.5 py-1 rounded text-xs flex items-center gap-1.5 hover:text-white" title="Documentation">
+        <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">Docs</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- QUICK COMMAND CHIPS BAR                                                   -->
+  <!-- ========================================================================= -->
+  <div class="h-10 bg-[#0e1017] border-b border-[var(--border)] px-4 flex items-center gap-2 overflow-x-auto text-xs shrink-0 select-none">
+    <span class="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold shrink-0">QUICK EXECUTE:</span>
+    <button onclick="sendCommand('/help\r')" class="cmd-chip">
+      <span class="text-amber-400 font-bold">/help</span>
+      <span class="text-zinc-500 text-[10px]">catalog</span>
+    </button>
+    <button onclick="sendCommand('/bench\r')" class="cmd-chip">
+      <span class="text-[#33C09E] font-bold">/bench</span>
+      <span class="text-zinc-500 text-[10px]">chaos arena</span>
+    </button>
+    <button onclick="sendCommand('/audit Spotify Premium individual plan costs $9.99 per month.\r')" class="cmd-chip">
+      <span class="text-cyan-400 font-bold">/audit</span>
+      <span class="text-zinc-500 text-[10px]">freshness drift</span>
+    </button>
+    <button onclick="sendCommand('/run Implement thread-safe LRU cache in Python\r')" class="cmd-chip">
+      <span class="text-emerald-400 font-bold">/run</span>
+      <span class="text-zinc-500 text-[10px]">coding agent</span>
+    </button>
+    <button onclick="sendCommand('/check Python 3.12 was released in 2023\r')" class="cmd-chip">
+      <span class="text-cyan-400 font-bold">/check</span>
+      <span class="text-zinc-500 text-[10px]">staleguard</span>
+    </button>
+    <button onclick="sendCommand('/brief Anthropic\r')" class="cmd-chip">
+      <span class="text-purple-400 font-bold">/brief</span>
+      <span class="text-zinc-500 text-[10px]">meeting intel</span>
+    </button>
+    <button onclick="sendCommand('/budget\r')" class="cmd-chip">
+      <span class="text-yellow-400 font-bold">/budget</span>
+      <span class="text-zinc-500 text-[10px]">token cost</span>
+    </button>
+    <button onclick="sendCommand('/models\r')" class="cmd-chip">
+      <span class="text-blue-400 font-bold">/models</span>
+      <span class="text-zinc-500 text-[10px]">failover chain</span>
+    </button>
+    <button onclick="sendCommand('/status\r')" class="cmd-chip">
+      <span class="text-emerald-400 font-bold">/status</span>
+      <span class="text-zinc-500 text-[10px]">gateway health</span>
+    </button>
+    <button onclick="sendCommand('/clear\r')" class="cmd-chip">
+      <span class="text-zinc-400 font-bold">/clear</span>
+      <span class="text-zinc-500 text-[10px]">banner</span>
+    </button>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN TERMINAL CANVAS                                                      -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 relative overflow-hidden bg-[#090a0d]">
+    <div id="terminal-container"></div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- BOTTOM STATUS / TELEMETRY FOOTER                                         -->
+  <!-- ========================================================================= -->
+  <footer class="h-8 border-t border-[var(--border)] px-4 bg-[#0c0e14] flex items-center justify-between text-[11px] font-mono text-zinc-400 shrink-0 select-none">
+    <div class="flex items-center gap-4">
+      <span class="flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+        <span class="text-zinc-300">Engine:</span>
+        <span class="text-white font-medium">Bifrost × Tavily AI Platform</span>
+      </span>
+      <span class="hidden md:inline text-zinc-600">|</span>
+      <span class="hidden md:flex items-center gap-1">
+        <span class="text-zinc-500">Geometry:</span>
+        <span id="term-dims" class="text-zinc-300">100 × 30</span>
+      </span>
+      <span class="hidden lg:inline text-zinc-600">|</span>
+      <span class="hidden lg:flex items-center gap-1">
+        <span class="text-zinc-500">Sandbox:</span>
+        <span class="text-emerald-400 font-medium">Strict Process Guardrail</span>
+      </span>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <span class="hidden sm:inline text-zinc-500">
+        Type <kbd class="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700 text-[10px]">/</kbd> for live autocomplete · <kbd class="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700 text-[10px]">Ctrl+C</kbd> cancel
+      </span>
+      <span class="text-zinc-600 hidden sm:inline">|</span>
+      <span class="text-zinc-400">Aryan Vishwakarma (@Aryanxp1)</span>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- TERMINAL LOGIC & WEBSOCKET ENGINE                                         -->
+  <!-- ========================================================================= -->
+  <script>
+    lucide.createIcons();
+
+    let term = null;
+    let fitAddon = null;
+    let webLinksAddon = null;
+    let ws = null;
+    let pingInterval = null;
+    let reconnectTimeout = null;
+    let reconnectAttempts = 0;
+    const maxReconnectAttempts = 10;
+
+    const statusBadge = document.getElementById('status-badge');
+    const statusText = document.getElementById('status-text');
+    const latencyVal = document.getElementById('latency-val');
+    const termDims = document.getElementById('term-dims');
+
+    function setStatus(state, msg) {
+      if (state === 'connected') {
+        statusBadge.className = 'flex items-center gap-2 px-2.5 py-1 rounded border border-emerald-600/50 bg-emerald-950/40 text-emerald-400';
+        statusBadge.innerHTML = `
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+          </span>
+          <span class="font-bold tracking-wider text-[11px]">CONNECTED</span>
+        `;
+      } else if (state === 'connecting') {
+        statusBadge.className = 'flex items-center gap-2 px-2.5 py-1 rounded border border-yellow-700/50 bg-yellow-950/40 text-yellow-400';
+        statusBadge.innerHTML = `
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-400"></span>
+          </span>
+          <span class="font-bold tracking-wider text-[11px]">${msg || 'CONNECTING'}</span>
+        `;
+      } else {
+        statusBadge.className = 'flex items-center gap-2 px-2.5 py-1 rounded border border-red-700/50 bg-red-950/40 text-red-400';
+        statusBadge.innerHTML = `
+          <span class="relative flex h-2 w-2">
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+          </span>
+          <span class="font-bold tracking-wider text-[11px]">${msg || 'DISCONNECTED'}</span>
+        `;
+      }
+    }
+
+    function initTerminal() {
+      const container = document.getElementById('terminal-container');
+      container.innerHTML = '';
+
+      term = new Terminal({
+        cursorBlink: true,
+        cursorStyle: 'block',
+        fontSize: 14,
+        fontFamily: "'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace",
+        lineHeight: 1.25,
+        letterSpacing: 0,
+        scrollback: 5000,
+        allowTransparency: true,
+        theme: {
+          background: '#090a0d',
+          foreground: '#e2e8f0',
+          cursor: '#33C09E',
+          cursorAccent: '#090a0d',
+          selectionBackground: 'rgba(51, 192, 158, 0.35)',
+          selectionForeground: '#ffffff',
+          black: '#12141c',
+          red: '#f87171',
+          green: '#33C09E',
+          yellow: '#facc15',
+          blue: '#60a5fa',
+          magenta: '#c084fc',
+          cyan: '#38bdf8',
+          white: '#f3f4f6',
+          brightBlack: '#4b5563',
+          brightRed: '#ef4444',
+          brightGreen: '#10b981',
+          brightYellow: '#fbbf24',
+          brightBlue: '#3b82f6',
+          brightMagenta: '#a855f7',
+          brightCyan: '#06b6d4',
+          brightWhite: '#ffffff'
+        }
+      });
+
+      fitAddon = new FitAddon.FitAddon();
+      webLinksAddon = new WebLinksAddon.WebLinksAddon();
+
+      term.loadAddon(fitAddon);
+      term.loadAddon(webLinksAddon);
+
+      term.open(container);
+      fitAddon.fit();
+      term.focus();
+
+      updateGeometryDisplay();
+
+      // Keyboard input forwarded to WebSocket
+      term.onData(data => {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+          ws.send(data);
+        }
+      });
+
+      // Window resize handler
+      const resizeObserver = new ResizeObserver(() => {
+        if (fitAddon) {
+          fitAddon.fit();
+          updateGeometryDisplay();
+          notifyResize();
+        }
+      });
+      resizeObserver.observe(container);
+
+      connectWebSocket();
+    }
+
+    function updateGeometryDisplay() {
+      if (term && termDims) {
+        termDims.textContent = `${term.cols} × ${term.rows}`;
+      }
+    }
+
+    function notifyResize() {
+      if (ws && ws.readyState === WebSocket.OPEN && term) {
+        ws.send(JSON.stringify({
+          type: 'resize',
+          cols: term.cols,
+          rows: term.rows
+        }));
+      }
+    }
+
+    function connectWebSocket() {
+      if (ws) {
+        try { ws.close(); } catch (e) {}
+      }
+
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const cols = term ? term.cols : 100;
+      const rows = term ? term.rows : 30;
+      const wsUrl = `${protocol}//${window.location.host}/ws/terminal?cols=${cols}&rows=${rows}`;
+
+      setStatus('connecting', reconnectAttempts > 0 ? `RETRYING (${reconnectAttempts})` : 'CONNECTING');
+
+      try {
+        ws = new WebSocket(wsUrl);
+      } catch (err) {
+        setStatus('disconnected', 'FAILED');
+        scheduleReconnect();
+        return;
+      }
+
+      ws.onopen = () => {
+        setStatus('connected');
+        reconnectAttempts = 0;
+        if (term) {
+          term.focus();
+        }
+        notifyResize();
+
+        // Start ping watchdog
+        clearInterval(pingInterval);
+        pingInterval = setInterval(() => {
+          if (ws && ws.readyState === WebSocket.OPEN) {
+            const startPing = performance.now();
+            ws.send(JSON.stringify({ type: 'ping', client_time: startPing }));
+          }
+        }, 8000);
+      };
+
+      ws.onmessage = (event) => {
+        const text = event.data;
+        // Check for JSON pong frame
+        if (typeof text === 'string' && text.startsWith('{') && text.endsWith('}')) {
+          try {
+            const parsed = JSON.parse(text);
+            if (parsed.type === 'pong') {
+              if (parsed.client_time) {
+                const rtt = Math.round(performance.now() - parsed.client_time);
+                latencyVal.textContent = `${rtt} ms`;
+              }
+              return;
+            }
+          } catch (e) {}
+        }
+
+        // Standard terminal output stream
+        if (term) {
+          term.write(text);
+        }
+      };
+
+      ws.onerror = (err) => {
+        console.warn('Terminal WebSocket error:', err);
+      };
+
+      ws.onclose = (event) => {
+        clearInterval(pingInterval);
+        setStatus('disconnected', 'DISCONNECTED');
+        if (term) {
+          term.write('\r\n\x1b[33m[Illuminati terminal session closed]\x1b[0m\r\n');
+        }
+        scheduleReconnect();
+      };
+    }
+
+    function scheduleReconnect() {
+      if (reconnectAttempts >= maxReconnectAttempts) {
+        setStatus('disconnected', 'OFFLINE');
+        return;
+      }
+      reconnectAttempts++;
+      const delay = Math.min(1000 * Math.pow(1.5, reconnectAttempts), 10000);
+      clearTimeout(reconnectTimeout);
+      reconnectTimeout = setTimeout(() => {
+        connectWebSocket();
+      }, delay);
+    }
+
+    function reconnectTerminal() {
+      reconnectAttempts = 0;
+      clearTimeout(reconnectTimeout);
+      if (term) {
+        term.reset();
+      }
+      connectWebSocket();
+    }
+
+    function clearTerminalScreen() {
+      if (term) {
+        term.clear();
+        term.focus();
+      }
+    }
+
+    function sendCommand(cmd) {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(cmd);
+        if (term) {
+          term.focus();
+        }
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initTerminal();
+    });
+  </script>
+</body>
+</html>

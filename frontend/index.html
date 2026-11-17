@@ -218,6 +218,13 @@
         <span id="top-stat-savings" class="text-emerald-600 dark:text-emerald-400 font-bold">84.2%</span>
       </div>
 
+      <!-- Cloud Terminal Link -->
+      <a href="/terminal" class="btn-mono-ghost px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-sans font-semibold text-emerald-400 border-emerald-600/40 hover:bg-emerald-950/40 hover:text-white" title="Launch Interactive Cloud CLI Terminal">
+        <i data-lucide="terminal" class="w-3.5 h-3.5 text-[#33C09E]"></i>
+        <span class="hidden sm:inline">CLI Terminal</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      </a>
+
       <!-- Documentation Link -->
       <a href="/overview" class="btn-mono-ghost px-2.5 py-1 rounded text-xs flex items-center gap-1.5 font-sans font-semibold text-zinc-800 dark:text-zinc-200 hover:text-white" title="Illuminati Documentation">
         <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
@@ -314,6 +321,25 @@
               <i data-lucide="columns" class="w-4 h-4 shrink-0 text-zinc-300"></i>
               <span class="truncate text-zinc-100 font-semibold">Side-by-Side Compare</span>
             </button>
+          </nav>
+        </div>
+
+        <!-- Section: Interactive Terminal -->
+        <div>
+          <div class="px-2 pb-1.5 text-[10px] font-mono tracking-widest uppercase text-zinc-300 font-bold">
+            INTERACTIVE SHELL
+          </div>
+          <nav class="space-y-1">
+            <a href="/terminal" class="nav-link w-full text-left flex items-center gap-2 text-emerald-400 hover:text-emerald-300">
+              <i data-lucide="terminal" class="w-4 h-4 shrink-0 text-[#33C09E]"></i>
+              <div class="flex-1 truncate">
+                <div class="engine-title truncate text-emerald-400 font-semibold flex items-center gap-1.5">
+                  Web CLI Terminal
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                </div>
+                <div class="engine-sub text-[10px] text-zinc-300 font-mono">Live /terminal REPL</div>
+              </div>
+            </a>
           </nav>
         </div>
 

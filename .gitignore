@@ -64,3 +64,11 @@ Thumbs.db
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Presentations & Slide Assets (generated offline)
+*.pptx
+slides/
+ai_slides/
+generate_deck.py
+compile_ai_deck.py
+

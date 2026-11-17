@@ -8,9 +8,11 @@
 <p align="center">
   <a href="https://github.com/Aryanxp1/illuminati"><img alt="Commits" src="https://img.shields.io/badge/commits-365%20verified-33C09E?style=flat-square&logo=git&logoColor=white"></a>
   <a href="https://github.com/Aryanxp1/illuminati"><img alt="Resilience Suites" src="https://img.shields.io/badge/chaos%20suites-12%2F12%20passed-33C09E?style=flat-square&logo=shield&logoColor=white"></a>
+  <a href="https://github.com/Aryanxp1/illuminati"><img alt="Tests" src="https://img.shields.io/badge/tests-15%2F15%20passed-33C09E?style=flat-square&logo=pytest&logoColor=white"></a>
   <img alt="Python" src="https://img.shields.io/badge/python-%E2%89%A5%203.10-5A5A5A?style=flat-square&logo=python&logoColor=white">
   <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-0.115+-009688?style=flat-square&logo=fastapi&logoColor=white">
   <img alt="Terminal" src="https://img.shields.io/badge/CLI-Rich%20%C2%B7%20Prompt--Toolkit-33C09E?style=flat-square">
+  <a href="https://illuminati-u2kk.onrender.com/terminal"><img alt="Web CLI Terminal" src="https://img.shields.io/badge/Web%20CLI%20Terminal-%2Fterminal-10b981?style=flat-square&logo=gnometerminal&logoColor=white"></a>
   <img alt="Bifrost Gateway" src="https://img.shields.io/badge/gateway-Bifrost%20by%20Maxim%20AI-126852?style=flat-square">
   <img alt="Tavily Knowledge Plane" src="https://img.shields.io/badge/retrieval-Tavily%20by%20Nebius-126852?style=flat-square">
   <a href="https://illuminati-u2kk.onrender.com/"><img alt="Live Demo" src="https://img.shields.io/badge/live%20demo-onrender.com-33C09E?style=flat-square&logo=render&logoColor=white"></a>
@@ -82,6 +84,13 @@ Four verified empirical results from live runs, reproducible locally with zero p
 
 Illuminati features a **real, bidirectional pseudo-terminal (PTY) bridge** embedded into the browser at [**https://illuminati-u2kk.onrender.com/terminal**](https://illuminati-u2kk.onrender.com/terminal). Unlike simulated web consoles, this connects through WebSocket to a live Python sub-process running Illuminati's authentic interactive REPL (`backend/modules/coding_agent/cli_ui.py`).
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/screens/gui-terminal.png">
+    <img src="docs/assets/screens/gui-terminal.png" alt="Illuminati Cloud Browser CLI Terminal (/terminal) with xterm.js and PTY Bridge" width="100%">
+  </picture>
+</p>
+
 ```text
 ┌────────────────────────────────────────────────────────┐
 │             Frontend: xterm.js Canvas                  │
@@ -129,16 +138,22 @@ Illuminati features a **real, bidirectional pseudo-terminal (PTY) bridge** embed
   </tr>
   <tr>
     <td width="50%" valign="top">
+      <b>Live Browser-Based CLI Terminal (<code>/terminal</code>)</b><br>
+      <sub>Genuine xterm.js PTY bridge with latency monitoring, live status beacon, and 1-click execution chips.</sub><br><br>
+      <img src="docs/assets/screens/gui-terminal.png" alt="Illuminati Web CLI Terminal Screenshot" width="100%">
+    </td>
+    <td width="50%" valign="top">
       <b>AgentBench Arena &amp; Multi-Model Matrix (GUI)</b><br>
       <sub>Live head-to-head model comparison matrix tracking latency, token usage, cost projections, and pass rates across suites.</sub><br><br>
       <img src="docs/assets/screens/gui-arena-benchmarks.png" alt="AgentBench Arena Multi-Model Matrix GUI" width="100%">
     </td>
+  </tr>
+  <tr>
     <td width="50%" valign="top">
       <b>12 Chaos Resilience Suites &amp; Mitigation Cards (GUI)</b><br>
       <sub>Real-time fault injection monitor detailing exact failover policies from Bifrost virtual keys to circuit breaker tripping.</sub><br><br>
       <img src="docs/assets/screens/gui-resilience-suites.png" alt="12 Chaos Resilience Suites GUI" width="100%">
     </td>
-  </tr>
   <tr>
     <td width="50%" valign="top">
       <b>StaleGuard Knowledge Drift &amp; Word-Level Diff Inspector</b><br>
@@ -206,11 +221,21 @@ Inside the interactive CLI (`chat` or `python main.py --cli`):
 
 ```text
   /bench              Run full 12 Chaos Resilience Suites + Multi-Model Matrix
-  /bench models       View head-to-head model latency & token cost comparison
-  /audit              Run complete token budget, gateway, and security audit
+  /bench compare      Compare model latency, tokens, cost & ARS resilience
+  /bench chaos        Run 12 Injected Fault Resilience Suites (PS 02)
+  /bench code         Leaderboard for highest quality code in fewest tokens
+  /audit <text>       Audit claims or code freshness with StaleGuard drift engine
   /run <task>         Execute token-governed coding agent with 3-phase cascade
-  /check <claim>      Check factual freshness with StaleGuard knowledge drift
+  /code <task>        Generate verified code patch with AST repair & SHA-256 receipt
+  /check <claim>      Check factual freshness with real-time web retrieval
   /brief <company>    Generate 30-day executive briefing dossier with verified quotes
+  /budget             Inspect token balance & USD cost governance
+  /models             View Bifrost model plane routing & failover chain
+  /receipt            Show cryptographic SHA-256 turn receipt & hash proof
+  /status             Check live API gateway health & network latency
+  /docs               Open documentation portal in browser
+  /web                Open interactive web observatory UI
+  /clear              Clear terminal screen & reprint Eye of Providence banner
   /help               Show available commands and keyboard shortcuts
   /exit               Gracefully exit interactive session
 ```
@@ -324,8 +349,9 @@ Every benchmark, test, and evaluation can be rerun with a single command. Offlin
 
 | Command | What it executes | Evidence Output |
 |:---|:---|:---|
-| `python -m unittest discover tests` | 42 unit and integration tests across all 4 engines | Console output |
-| `run bench` *(or `python main.py --bench`)* | 12 Chaos Fault Injection Suites + ARS Reliability Scoring | Rich terminal table + SQLite record |
+| `python -m pytest tests -v` | 15 unit, integration & PTY terminal security tests | All 15 passed |
+| `python main.py chat` *(or `chat.bat`)* | Interactive CLI REPL with slash popup & Rich ANSI | Real-time terminal session |
+| `run bench` *(or `python main.py bench`)* | 12 Chaos Fault Injection Suites + ARS Reliability Scoring | Rich terminal table + SQLite record |
 | `run bench models` | Head-to-head comparison of gpt-4o-mini, haiku, and deepseek | Multi-model benchmark matrix |
 | `run audit` | Validates budget ceiling, gateway health, and security rules | System audit card |
 | `run check "Spotify Premium costs $9.99"` | StaleGuard knowledge drift analysis on Spotify pricing | Freshness report + word-level diff |
@@ -348,6 +374,7 @@ Every benchmark, test, and evaluation can be rerun with a single command. Offlin
 illuminati/
 ├── main.py                  # Unified launcher: CLI REPL + Web Server entrypoint
 ├── requirements.txt         # Consolidated Python dependencies
+├── render.yaml              # Render cloud infrastructure blueprint
 ├── .env.example             # Security-hardened configuration template
 ├── chat.bat                 # 1-click interactive CLI REPL launcher
 ├── code.bat                 # 1-click token-governed coding agent shortcut
@@ -355,7 +382,8 @@ illuminati/
 ├── generate_logo.py         # Dot-matrix LED Eye of Providence generator script
 ├── illuminati.svg           # High-resolution transparent SVG logo (#33C09E mint dots)
 ├── backend/
-│   ├── main.py              # Unified FastAPI server mounting all 4 engine routers
+│   ├── main.py              # Unified FastAPI server mounting all 4 engine routers + PTY WS
+│   ├── terminal_bridge.py   # WebSocket PTY session manager, rate limiter & secret scrubber
 │   ├── config.py            # Global configuration, budget thresholds & gateway endpoints
 │   ├── database.py          # SQLite connection pool with WAL mode & busy timeout
 │   ├── gateway/
@@ -387,13 +415,26 @@ illuminati/
 │           └── router.py    # REST endpoints: /api/briefing/*
 ├── frontend/
 │   ├── index.html           # Unified Dark Glassmorphic Dashboard (Tailwind + Lucide)
+│   ├── terminal.html        # Public Web-Based CLI Terminal canvas (xterm.js + PTY bridge)
 │   ├── docs.html            # Comprehensive interactive OpenAPI documentation portal
 │   └── illuminati.svg       # Brand asset for web navigation bar
+├── tests/
+│   ├── test_terminal.py     # PTY lifecycle, WebSocket relay, capacity cap & secret scrub tests
+│   └── test_api_endpoints.py# REST API & engine regression verification tests
 └── docs/
     └── assets/
         ├── banner.png       # High-resolution README hero banner
         ├── banner.svg       # Scalable vector banner
         └── screens/         # High-resolution CLI and GUI screenshots
+            ├── cli-hero.png       # Interactive Rich REPL with Eye of Providence
+            ├── cli-bench.png      # Terminal benchmark suites & ARS score output
+            ├── gui-terminal.png   # Live Browser-Based CLI Terminal (/terminal)
+            ├── gui-overview.png   # Unified Dashboard Overview
+            ├── gui-arena-benchmarks.png # Arena comparison matrix
+            ├── gui-resilience-suites.png# 12 Chaos fault suites monitor
+            ├── gui-staleguard.png # Freshness detector & word diff
+            ├── gui-briefing.png   # Pre-meeting briefing dossier
+            └── gui-docs.png       # Interactive documentation portal
 ```
 
 ---
